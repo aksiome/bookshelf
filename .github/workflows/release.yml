@@ -5,16 +5,22 @@ on:
     tags: [ 'v*.*.*' ]
 
 jobs:
-  build:
+  setup:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Setup environement variables
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup environment variables
         run: |
           pip install -r scripts/requirements.txt
           python3 scripts/definitions.py
           TAG=${{ github.ref_name }}
           echo "VERSION=${TAG#v}" >> $GITHUB_ENV
+
+  package:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
       - name: Package datapacks
         run: python3 scripts/distribute.py -v ${{ env.MC_VERSION }}-${{ env.VERSION }} -w 0
       - name: Package world
@@ -23,11 +29,22 @@ jobs:
           config: .mcwpack.yml
           source: ${{ env.WORLD_PATH }}
           target: ${{ env.BUILD_PATH }}/bookshelf-world-${{ env.MC_VERSION }}-${{ env.VERSION }}.zip
+
+  upload:
+    needs: package
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
       - name: Upload artifacts
         uses: softprops/action-gh-release@v1
         with:
           files: ${{ env.BUILD_PATH }}/*.zip
 
+  tag:
+    runs-on: ubuntu-latest
     permissions:
-      id-token: write
       contents: write
+    steps:
+      - name: Update latest tag
+        uses: EndBug/latest-tag@latest
