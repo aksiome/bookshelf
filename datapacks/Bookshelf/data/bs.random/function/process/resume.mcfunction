@@ -11,16 +11,7 @@
 # - Any modifications must be documented and disclosed under the same license
 #
 # For more details, refer to the MPL v2.0.
-#
-# Documentation of the feature: https://bookshelf.docs.gunivers.net/en/latest/modules/random.html#random-distributions
 # ------------------------------------------------------------------------------------------------------------
 
-kill B5-0-0-0-1
-forceload remove -30000000 1600
-
-scoreboard objectives remove bs.out
-scoreboard objectives remove bs.data
-scoreboard objectives remove bs.const
-
-data remove storage bs:in random
-data remove storage bs:out random
+data modify storage bs:data random.processes[]._ set value 1b
+execute as B5-0-0-0-1 run function bs.random:process/unqueue with storage bs:data random.processes[-1]

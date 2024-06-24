@@ -12,15 +12,21 @@
 #
 # For more details, refer to the MPL v2.0.
 #
-# Documentation of the feature: https://bookshelf.docs.gunivers.net/en/latest/modules/random.html#random-distributions
+# Documentation of the feature: https://bookshelf.docs.gunivers.net/en/latest/modules/random.html#noise
 # ------------------------------------------------------------------------------------------------------------
 
-kill B5-0-0-0-1
-forceload remove -30000000 1600
+data modify storage bs:data random.process set value { \
+  resume: "bs.random:process/white_noise/recurse/resume", \
+  x: 0, \
+  y: 0, \
+  run: "", \
+  limit: 4096, \
+  direction:"xz", \
+  spacing: 1, \
+}
 
-scoreboard objectives remove bs.out
-scoreboard objectives remove bs.data
-scoreboard objectives remove bs.const
+$data modify storage bs:data random.process merge value $(with)
+$data modify storage bs:data random.process merge value {w:$(width),h:$(height)}
+execute unless data storage bs:data random.process.run run data modify storage bs:data random.process.limit set value -1
 
-data remove storage bs:in random
-data remove storage bs:out random
+execute align xyz as B5-0-0-0-1 positioned ~.5 ~.5 ~.5 run function bs.random:process/white_noise/recurse/init

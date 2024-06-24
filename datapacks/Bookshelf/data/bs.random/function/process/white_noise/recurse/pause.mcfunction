@@ -12,15 +12,15 @@
 #
 # For more details, refer to the MPL v2.0.
 #
-# Documentation of the feature: https://bookshelf.docs.gunivers.net/en/latest/modules/random.html#random-distributions
+# Documentation of the feature: https://bookshelf.docs.gunivers.net/en/latest/modules/random.html#noise
 # ------------------------------------------------------------------------------------------------------------
 
-kill B5-0-0-0-1
-forceload remove -30000000 1600
+tp @s ~ ~ ~ ~ ~
+data modify storage bs:data random.process.pos set from entity @s Pos
+data modify storage bs:data random.process.rot set from entity @s Rotation
+execute in minecraft:overworld run tp @s -30000000 0 1600
 
-scoreboard objectives remove bs.out
-scoreboard objectives remove bs.data
-scoreboard objectives remove bs.const
+execute store result storage bs:data random.process.x int 1 run scoreboard players get #random.x bs.data
+execute store result storage bs:data random.process.y int 1 run scoreboard players get #random.y bs.data
 
-data remove storage bs:in random
-data remove storage bs:out random
+function bs.random:process/queue

@@ -12,15 +12,8 @@
 #
 # For more details, refer to the MPL v2.0.
 #
-# Documentation of the feature: https://bookshelf.docs.gunivers.net/en/latest/modules/random.html#random-distributions
+# Documentation of the feature: https://bookshelf.docs.gunivers.net/en/latest/modules/random.html#noise
 # ------------------------------------------------------------------------------------------------------------
 
-kill B5-0-0-0-1
-forceload remove -30000000 1600
-
-scoreboard objectives remove bs.out
-scoreboard objectives remove bs.data
-scoreboard objectives remove bs.const
-
-data remove storage bs:in random
-data remove storage bs:out random
+$$(run)
+scoreboard players remove #random.i bs.data 1

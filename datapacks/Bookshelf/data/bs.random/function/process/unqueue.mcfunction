@@ -11,16 +11,12 @@
 # - Any modifications must be documented and disclosed under the same license
 #
 # For more details, refer to the MPL v2.0.
-#
-# Documentation of the feature: https://bookshelf.docs.gunivers.net/en/latest/modules/random.html#random-distributions
 # ------------------------------------------------------------------------------------------------------------
 
-kill B5-0-0-0-1
-forceload remove -30000000 1600
+data modify storage bs:data random.process set from storage bs:data random.processes[-1]
+data remove storage bs:data random.process._
 
-scoreboard objectives remove bs.out
-scoreboard objectives remove bs.data
-scoreboard objectives remove bs.const
+$function $(resume)
 
-data remove storage bs:in random
-data remove storage bs:out random
+data remove storage bs:data random.processes[-1]
+execute if data storage bs:data random.processes[-1]._ run function bs.random:process/unqueue with storage bs:data random.processes[-1]
