@@ -7,7 +7,7 @@ from bookshelf.definitions import MC_VERSIONS, VERSION
 
 
 def version() -> str:
-    """Get the current version of Bookshelf."""
+    """Get the current version of Bookshelf. Trigger new pre release"""
     return VERSION
 
 def mc_versions() -> list[str]:
