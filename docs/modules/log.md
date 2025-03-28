@@ -31,7 +31,7 @@ Log an error message. For more information on how it works see the [usage](#usag
   **Function macro**:
   :::{treeview}
   - {nbt}`compound` Arguments
-    - {nbt}`string` **message**: Logged message. Must be a valid JSON text component.
+    - {nbt}`string` **message**: Logged message. Must be a valid SNBT text component.
     - {nbt}`string` **namespace**: Namespace of the function.
     - {nbt}`string` **path**: Origin path for the log (current Minecraft function).
     - {nbt}`string` **tag**: A tag to identify the function. This tag is displayed in the log message and is used as group to manage the granularity.
@@ -55,7 +55,7 @@ Log a warning message. For more information on how it works see the [usage](#usa
   **Function macro**:
   :::{treeview}
   - {nbt}`compound` Arguments
-    - {nbt}`string` **message**: Logged message. Must be a valid JSON text component.
+    - {nbt}`string` **message**: Logged message. Must be a valid SNBT text component.
     - {nbt}`string` **namespace**: Namespace of the function.
     - {nbt}`string` **path**: Origin path for the log (current Minecraft function).
     - {nbt}`string` **tag**: A tag to identify the function. This tag is displayed in the log message and is used as group to manage the granularity.
@@ -79,7 +79,7 @@ Log an information message. For more information on how it works see the [usage]
   **Function macro**:
   :::{treeview}
   - {nbt}`compound` Arguments
-    - {nbt}`string` **message**: Logged message. Must be a valid JSON text component.
+    - {nbt}`string` **message**: Logged message. Must be a valid SNBT text component.
     - {nbt}`string` **namespace**: Namespace of the function.
     - {nbt}`string` **path**: Origin path for the log (current Minecraft function).
     - {nbt}`string` **tag**: A tag to identify the function. This tag is displayed in the log message and is used as group to manage the granularity.
@@ -103,7 +103,7 @@ Log a debug message. For more information on how it works see the [usage](#usage
   **Function macro**:
   :::{treeview}
   - {nbt}`compound` Arguments
-    - {nbt}`string` **message**: Logged message. Must be a valid JSON text component.
+    - {nbt}`string` **message**: Logged message. Must be a valid SNBT text component.
     - {nbt}`string` **namespace**: Namespace of the function.
     - {nbt}`string` **path**: Origin path for the log (current Minecraft function).
     - {nbt}`string` **tag**: A tag to identify the function. This tag is displayed in the log message and is used as group to manage the granularity.
@@ -216,7 +216,7 @@ Each level allows the visualization of subsequent levels. For example, if a user
 Log functions take four variables as input. The `path` of the current function that inform users of the log origin, the `tag`, the `namespace` and the `message`.
 
 ```{warning}
-The `message` string must be a valid JSON text component. Thus, to specify a plain string text as a message, the message needs to be escaped (`"\"message\""` or `'"message"'`).
+The `message` string must be a valid SNBT text component. Thus, to specify a plain string text as a message, the message needs to be escaped  (`"\"message\""` or `'"message"'`).
 ```
 
 *Example: Log a simple warning message. We assume the log originates from the `bs.foo:bar` function:*
@@ -232,7 +232,7 @@ Will display the following message if the user has one of these tags: `bs.foo.lo
 *Example: Log a complex info message. We assume the log originates from the `bs.foo:baz` function:*
 
 ```mcfunction
-function #bs.log:info { namespace: "bs.foo", path: "bs.foo:baz", tag: "baz", message: '[{"text":"Score: ","color":"light_purple"},{"score":{"name":"-1","objective":"bs.const"}},{"text":", "},{"text":"@p: ","color":"light_purple"},{"selector":"@p"},{"text":", "},{"text":"[hover me]","color":"light_purple","hoverEvent":{"action":"show_text","contents":"That tickles!"}}]' }
+function #bs.log:info { namespace: "bs.foo", path: "bs.foo:baz", tag: "baz", message: [{text:"Score: ",color:"light_purple"},{score:{name:"-1",objective:"bs.const"}},{text:", "},{text:"@p: ",color:"light_purple"},{selector:"@p"},{text:", "},{text:"[hover me]",color:"light_purple",hover_event:{action:"show_text",value:"That tickles!"}}] }
 ```
 
 Will display the following message if the user has one of these tags: `bs.foo.log.baz.info`, `bs.foo.log.baz.debug`, `bs.foo.log._.info`, `bs.foo.log._.debug`, `bs.foo.log.baz._`, `_.log.baz.info`, `_.log.baz.debug`, `_.log._.info`, `_.log._.debug`, `_.log.baz._`.
@@ -249,23 +249,23 @@ To add new log message formats, you have to write directly inside the storage ar
 {
   namespaces: ["<namespace>"],
   format: {
-    debug: "<JSON compound>",
-    info: "<JSON compound>",
-    warn: "<JSON compound>",
-    error: "<JSON compound>",
+    debug: "<SNBT compound>",
+    info: "<SNBT compound>",
+    warn: "<SNBT compound>",
+    error: "<SNBT compound>",
   }
 }
 ```
 
 The `namespaces` array stores all the namespaces sharing the same log message formats.
 The four formats (`error`, `warn`, `info` and `debug`) describe the log format for the respecting severity level.
-The value of each must be a full JSON text component.
+The value of each must be a full SNBT text component.
 
 Bookshelf exposes several values that can be used directly in the log messages format:
 
 |             | storage  |        path        |                                      description                                        |
 |-------------|----------|--------------------|-----------------------------------------------------------------------------------------|
-{nbt}`string` | bs:in    | log.message        | The message of the log (must be a valid JSON text component)                            |
+{nbt}`string` | bs:in    | log.message        | The message of the log (must be a valid SNBT text component)                            |
 {nbt}`string` | bs:in    | log.namespace      | The namespace of the current log message                                                |
 {nbt}`string` | bs:in    | log.path           | The path of the function that logs the current message                                  |
 {nbt}`string` | bs:in    | log.tag            | The tag of the log message                                                              |
@@ -274,8 +274,8 @@ Bookshelf exposes several values that can be used directly in the log messages f
 {nbt}`string` | bs:in    | log.seconds        | The seconds of the log message timestamp                                                |
 {nbt}`string` | bs:in    | log.ticks          | The ticks of the log message timestamp                                                  |
 {nbt}`int`    | bs:in    | log.gametime       | The gametime where the message was logged                                               |
-{nbt}`string` | bs:const | log.time_hms       | A JSON text component to display time in the in hh:mm:ss format                         |
-{nbt}`string` | bs:const | log.time_hmst      | A JSON text component to display time in the in hh:mm:ss:tt format                      |
+{nbt}`string` | bs:const | log.time_hms       | A SNBT text component to display time in the in hh:mm:ss format                         |
+{nbt}`string` | bs:const | log.time_hmst      | A SNBT text component to display time in the in hh:mm:ss:tt format                      |
 
 *Example: Define custom log message formats for the namespace `bs.foo`:*
 
@@ -284,10 +284,10 @@ Bookshelf exposes several values that can be used directly in the log messages f
 data modify storage bs:const log.messages append value { \
     namespaces: ["bs.foo"], \
     format: { \
-      debug: '["", {"nbt": "log.full_time", "storage": "bs:const", "interpret": true, "color": "red"}, " [DEBUG] - ", {"nbt": "log.message", "storage": "bs:in", "interpret": true}]', \
-      info: '["", {"nbt": "log.full_time", "storage": "bs:const", "interpret": true, "color": "red"}, " [INFO] - ", {"nbt": "log.message", "storage": "bs:in", "interpret": true}]', \
-      warn: '["", {"nbt": "log.full_time", "storage": "bs:const", "interpret": true, "color": "red"}, " [WARN] - ", {"nbt": "log.message", "storage": "bs:in", "interpret": true}]', \
-      error: '["", {"nbt": "log.full_time", "storage": "bs:const", "interpret": true, "color": "red"}, " [ERROR] - ", {"nbt": "log.message", "storage": "bs:in", "interpret": true}]' \
+      debug: ["", {nbt: "log.full_time", storage: "bs:const", interpret: true, color: "red"}, " [DEBUG] - ", {nbt: "log.message", storage: "bs:in", interpret: true}], \
+      info: ["", {nbt: "log.full_time", storage: "bs:const", interpret: true, color: "red"}, " [INFO] - ", {nbt: "log.message", storage: "bs:in", interpret: true}], \
+      warn: ["", {nbt: "log.full_time", storage: "bs:const", interpret: true, color: "red"}, " [WARN] - ", {nbt: "log.message", storage: "bs:in", interpret: true}], \
+      error: ["", {nbt: "log.full_time", storage: "bs:const", interpret: true, color: "red"}, " [ERROR] - ", {nbt: "log.message", storage: "bs:in", interpret: true}] \
     } \
 }
 ```

@@ -13,6 +13,7 @@
 # For more details, refer to the MPL v2.0.
 # ------------------------------------------------------------------------------------------------------------
 
-$data modify storage bs:ctx _ set string storage bs:data dump[-1].var $(y)
-$data modify storage bs:data dump[-1].var set string storage bs:data dump[-1].var 0 $(x)
-function bs.dump:interpret/path/expand/cast with storage bs:ctx
+scoreboard players set #dump.cursor bs.data 0
+data modify storage bs:data dump.char set string storage bs:data dump.stack[-1].var -1
+data modify storage bs:data dump.parse set string storage bs:data dump.stack[-1].var 0 -1
+function bs.dump:interpret/nbt/expand/parse/next

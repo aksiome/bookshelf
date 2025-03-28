@@ -13,6 +13,6 @@
 # For more details, refer to the MPL v2.0.
 # ------------------------------------------------------------------------------------------------------------
 
-execute store result storage bs:ctx x int 1 run scoreboard players set #dump.cursor bs.data -2
-execute store result storage bs:ctx y int 1 run scoreboard players set #dump.cursor bs.data -1
-function bs.dump:interpret/path/expand/parse/next with storage bs:ctx
+schedule function bs.log:time/tick 1t
+execute store success score #s bs.ctx run data modify storage bs:data log.time set string block -30000000 0 1605 LastOutput.text 1 -2
+execute if score #s bs.ctx matches 1 store result score #log.gametime bs.data run time query gametime

@@ -13,4 +13,10 @@
 # For more details, refer to the MPL v2.0.
 # ------------------------------------------------------------------------------------------------------------
 
-$data modify storage bs:data dump[-1].var set value $(var)
+$function #bs.log:error { \
+  namespace: bs.interaction, \
+  path: "#bs.interaction:$(event)", \
+  tag: "$(event)", \
+  message: ["The current entity is not an interaction."], \
+}
+return fail

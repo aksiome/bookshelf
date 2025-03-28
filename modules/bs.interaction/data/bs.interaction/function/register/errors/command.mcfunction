@@ -13,15 +13,10 @@
 # For more details, refer to the MPL v2.0.
 # ------------------------------------------------------------------------------------------------------------
 
-# The registered event has the following properties:
-# - id: The ID of the event.
-# - type: The type of event.
-# - run: The command to execute.
-# - executor: The executor of the command.
-
-# Get a new ID based on the ID of the last registered event incremented by 1.
-$execute store result score #i bs.ctx run data get storage bs:data interaction.$(y)[0].id
-execute store result storage bs:ctx _.id int 1 run scoreboard players add #i bs.ctx 1
-
-$data modify storage bs:data interaction.$(y) prepend from storage bs:ctx _
-return run scoreboard players get #i bs.ctx
+$function #bs.log:error { \
+  namespace: bs.interaction, \
+  path: "#bs.interaction:$(event)", \
+  tag: "$(event)", \
+  message: ["The command is not valid."], \
+}
+return fail

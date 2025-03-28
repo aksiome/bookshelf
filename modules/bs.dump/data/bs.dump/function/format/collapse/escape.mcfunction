@@ -13,6 +13,6 @@
 # For more details, refer to the MPL v2.0.
 # ------------------------------------------------------------------------------------------------------------
 
-data modify storage bs:data interaction.run set value []
-$data modify storage bs:data interaction.run append from storage bs:data interaction.$(y)[{type:"hover_leave"}]
-execute if data storage bs:data interaction.run[-1] run function bs.interaction:on_event/run with storage bs:data interaction.run[-1]
+$data modify storage bs:data dump.escape._ set value '\'$(value)'
+data modify entity B5-0-0-0-2 text set value {storage:"bs:data",nbt:"dump.escape"}
+data modify storage bs:data dump.value set string entity B5-0-0-0-2 text 5 -2

@@ -13,6 +13,6 @@
 # For more details, refer to the MPL v2.0.
 # ------------------------------------------------------------------------------------------------------------
 
-schedule function bs.log:__tick__ 1t
-execute store success score #s bs.ctx run data modify storage bs:data log.time set string block -30000000 0 1605 LastOutput 10 18
-execute if score #s bs.ctx matches 1 store result score #log.gametime bs.data run time query gametime
+data modify storage bs:data interaction set value []
+data modify storage bs:data interaction append from entity @s data."bs.interaction".events[{type:"hover"}]
+execute if data storage bs:data interaction[-1] run function bs.interaction:on_event/run with storage bs:data interaction[-1]

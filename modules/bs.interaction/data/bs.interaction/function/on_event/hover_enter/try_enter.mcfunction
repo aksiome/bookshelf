@@ -13,6 +13,4 @@
 # For more details, refer to the MPL v2.0.
 # ------------------------------------------------------------------------------------------------------------
 
-$data modify storage bs:ctx _ set value $(with)
-execute store result storage bs:ctx y int 1 run scoreboard players get @s bs.interaction.id
-return run function bs.interaction:clear_events/remove_matching with storage bs:ctx
+$execute if predicate {condition:entity_properties,entity:this,predicate:{type_specific:{type:player,looking_at:{type:interaction,nbt:"{Tags:[bs.interaction.is_hoverable]}",distance:{absolute:{max:$(y)}}}}}} run function bs.interaction:on_event/hover_enter/hover_enter
