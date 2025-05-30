@@ -16,6 +16,7 @@
 
 ## === SETUP ===
 
+await entity B5-0-0-0-3
 summon minecraft:interaction ~.5 ~ ~.5 {Tags: ["bs.packtest","bs.packtest.executor"], width: 1.0, height: 2.0}
 execute as @n[type=minecraft:interaction,tag=bs.packtest,distance=..2] run function #bs.interaction:on_right_click { run: "tag @s add bs.packtest.source", executor: "source" }
 execute as @n[type=minecraft:interaction,tag=bs.packtest,distance=..2] run function #bs.interaction:on_right_click { run: "tag @s add bs.packtest.target", executor: "target" }

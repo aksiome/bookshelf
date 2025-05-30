@@ -14,7 +14,7 @@
 # ------------------------------------------------------------------------------------------------------------
 # @dummy
 
-await entity B5-0-0-0-2
+await entity B5-0-0-0-3
 
 data modify storage bs:data packtest set value {foo:"bar"}
 function #bs.dump:var { var: { storage: "storage bs:data packtest", entity:"entity @s {} 0", score: ["3 bs.const", "-_- bs.const"] }}

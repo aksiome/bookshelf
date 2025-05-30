@@ -18,3 +18,5 @@ execute unless entity B5-0-0-0-1 run summon minecraft:marker -30000000 0 1600 {U
 execute unless entity B5-0-0-0-2 run summon minecraft:text_display -30000000 0 1600 {UUID:[I;181,0,0,2],Tags:["bs.entity","bs.persistent","smithed.entity","smithed.strict"],view_range:0f,alignment:"center"}
 
 scoreboard objectives add bs.data dummy [{text:"BS ",color:"dark_gray"},{text:"Data",color:"aqua"}]
+
+data modify storage bs:data view.transformation set value [0f,0f,0f,0f,0f,0f,0f,0f,0f,0f,0f,0f,0f,0f,0f,1f]

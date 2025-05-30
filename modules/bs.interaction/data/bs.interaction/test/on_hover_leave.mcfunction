@@ -16,6 +16,7 @@
 
 ## === SETUP ===
 
+await entity B5-0-0-0-3
 fill ~-1 ~-1 ~-1 ~1 ~1 ~1 minecraft:air replace minecraft:barrier
 summon minecraft:interaction ~.5 ~ ~1.5 {Tags: ["bs.packtest","bs.packtest.executor"], width: 1.0, height: 2.0}
 summon minecraft:interaction ~1.5 ~ ~.5 {Tags: ["bs.packtest","bs.packtest.trap"], width: 1.0, height: 2.0}
