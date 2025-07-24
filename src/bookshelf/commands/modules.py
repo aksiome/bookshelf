@@ -91,7 +91,10 @@ def build_module(
             resource_pack=pack_config,
             output=options.output,
             meta=options.meta,
-            require=options.require,
+            require=[
+                *options.require,
+                "bookshelf.plugins.set_pack_meta",
+            ],
         ).resolve(ROOT_DIR)).build()
 
     return module
