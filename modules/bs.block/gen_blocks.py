@@ -7,7 +7,7 @@ from beet import BlockTag, Context, Function, LootTable
 from pydantic import BaseModel
 
 from bookshelf.definitions import MC_VERSIONS
-from bookshelf.helpers import (
+from bookshelf.utils import (
     cache_result,
     download_and_parse_json,
     gen_loot_table_tree,
@@ -142,10 +142,13 @@ def beet_default(ctx: Context) -> None:
             .get(f"{namespace}:has_state", BlockTag()) \
             .merge(gen_has_state_block_tag(blocks))
 
-        ctx.generate("get/get_type", gen_get_type_loot_table(blocks))
-        ctx.generate("get/get_block", gen_get_block_loot_table(blocks, namespace))
+        ctx.generate("get/get_type", render=gen_get_type_loot_table(blocks))
+        ctx.generate(
+            "get/get_block",
+            render=gen_get_block_loot_table(blocks, namespace),
+        )
         for s in {s.id: s for b in blocks for s in b.states}.values():
-            ctx.generate(f"get/{s.id}", gen_get_state_loot_table(s, namespace))
+            ctx.generate(f"get/{s.id}", render=gen_get_state_loot_table(s, namespace))
 
         ctx.generate("import/types_table",
             types=render_snbt({

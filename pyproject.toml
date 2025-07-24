@@ -8,24 +8,26 @@ dynamic = ["version"]
 description = "Scripts for Bookshelf and the Github pipeline."
 authors = [{ name = "Bookshelf Contributors", email = "contact@gunivers.net" }]
 dependencies = [
-  "beet>=0.110.0",
-  "click>=8.1.8",
-  "colorama>=0.4.6",
-  "pydantic>=2.11.3",
-  "requests>=2.32.3",
+  "beet>=0.111.0",
+  "click>=8.2.1",
+  "httpx>=0.28.1",
+  "joblib>=1.5.1",
   "lectern>=0.34.0",
+  "portalocker>=3.2.0",
+  "pydantic>=2.11.7",
+  "rich>=14.0.0",
   "watchfiles>=1.1.0",
 ]
-requires-python = ">=3.12"
+requires-python = ">=3.12,<4.0"
 license = { text = "MPL-2.0" }
 
-[dependency-groups]
+[project.optional-dependencies]
 dev = [
-  "mypy>=1.15.0",
-  "ruff>=0.11.6",
+  "mypy>=1.17.0",
+  "ruff>=0.12.4",
   "types-colorama>=0.4.15.20240311",
-  "types-docutils>=0.21.0.20241128",
-  "types-requests>=2.32.0.20250328",
+  "types-docutils>=0.21.0.20250722",
+  "types-requests>=2.32.4.20250611",
 ]
 docs = [
   "linkify-it-py>=2.0.3",
@@ -34,7 +36,7 @@ docs = [
   "sphinx-autobuild>=2024.10.3",
   "sphinx-copybutton>=0.5.2",
   "sphinx-design>=0.6.1",
-  "sphinx-minecraft>=1.0.2",
+  "sphinx-minecraft>=1.0.5",
   "sphinx-togglebutton>=0.3.2",
   "sphinx>=8.2.3",
 ]
@@ -50,15 +52,29 @@ watch = "bookshelf.commands.modules:watch"
 distribution = true
 build.custom-hook = "build.py"
 build.source-includes = ["modules"]
-version.getter = "bookshelf:version"
+version.getter = "src.bookshelf:version"
 version.source = "call"
 
+[tool.poetry]
+version = "1.0"
+packages = [
+  { include = "bookshelf", from = "src" }
+]
+
 [tool.mypy]
-files = ["bookshelf", "modules"]
+mypy_path = "src"
+files = ["src", "modules"]
 explicit_package_bases = true
 namespace_packages = true
 
 [tool.ruff]
-namespace-packages = ["bookshelf"]
 lint.select = ["ALL"]
-lint.ignore = ["D100", "D203", "D213", "INP001", "S603", "UP017"]
+lint.ignore = [
+  "D100",
+  "D203",
+  "D213",
+  "INP001",
+  "S603",
+  "TRY400",
+  "UP017",
+]

@@ -1,0 +1,8 @@
+for rewrite
+with list of all states,
+for each possible sequences generate an id
+map sequence to id
+add score meaning the more a sequence is used the better
+score is also based on number of files needed so the size of the sequence
+score is how much is saved in number of files, so each time a new sequence is reused we add the size of the sequence (number of file saved)
+for each sequence group instead of blocks because there are less to handle this way then we can map sequence id to block

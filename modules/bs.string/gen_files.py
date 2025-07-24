@@ -1,6 +1,6 @@
 from beet import Context, Function
 
-from bookshelf.helpers import render_snbt
+from bookshelf.utils import render_snbt
 
 LOWER_TO_UPPER = {chr(c): chr(c).upper() for c in range(0x110000) if chr(c).islower()}
 UPPER_TO_LOWER = {chr(c): chr(c).lower() for c in range(0x110000) if chr(c).isupper()}

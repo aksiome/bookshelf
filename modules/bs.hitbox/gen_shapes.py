@@ -4,13 +4,13 @@ from beet import BlockTag, Context, LootTable
 from pydantic import BaseModel
 
 from bookshelf.definitions import MC_VERSIONS
-from bookshelf.helpers import (
+from bookshelf.utils import (
     download_and_parse_json,
     gen_loot_table_tree,
     render_snbt,
 )
 
-SHAPES_META = "https://raw.githubusercontent.com/mcbookshelf/mcdata/refs/tags/{}/blocks/shapes.min.json"
+SHAPES_META = "https://raw.githubusercontent.com/mcbookshelf/mcdata/refs/tags/v1/{}/blocks/data.min.json"
 
 type Properties = dict[str, str]
 type VoxelShape = list[list[float]]
@@ -44,9 +44,15 @@ def beet_default(ctx: Context) -> None:
         .merge(gen_is_full_cube_block_tag(shapes))
 
     with ctx.override(generate_namespace=namespace):
-        ctx.generate("get/get_block", gen_get_block_loot_table(shapes, namespace))
+        ctx.generate(
+            "get/get_block",
+            render=gen_get_block_loot_table(shapes, namespace),
+        )
         for entry in filter(lambda entry: entry.group > 0, shapes):
-            ctx.generate(f"get/{entry.group}", gen_get_states_loot_table(entry.shapes))
+            ctx.generate(
+                f"get/{entry.group}",
+                render=gen_get_states_loot_table(entry.shapes),
+            )
 
 
 def get_block_shapes(ctx: Context, version: str) -> list[BlockShapes]:
@@ -58,10 +64,12 @@ def get_block_shapes(ctx: Context, version: str) -> list[BlockShapes]:
         raise TypeError(error_msg)
 
     grouped_blocks = defaultdict(list)
-    for block, entries in raw_shapes.items():
-        offset = any(e["has_offset"] for e in entries)
-        grouped_shapes = group_shapes_by_properties(entries)
-        grouped_blocks[(offset, tuple(grouped_shapes.items()))].append(block)
+    for block, data in raw_shapes.items():
+        grouped_shapes = group_shapes_by_properties(data["states"])
+        grouped_blocks[(
+            data["has_shape_offset"],
+            tuple(grouped_shapes.items()),
+        )].append(block)
 
     group = 0
     return [BlockShapes(
