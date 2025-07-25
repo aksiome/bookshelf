@@ -13,5 +13,10 @@ class Version(BaseModel):
     @classmethod
     def parse(cls, version: str) -> Self:
         """Parse the version string into a Version with major, minor, and patch."""
-        major, minor, patch = map(int, version.split("."))
-        return cls(major=major,minor=minor,patch=patch)
+        try:
+            # Split the string and convert each part to an integer
+            major, minor, patch = map(int, version.split("."))
+            return cls(major=major,minor=minor,patch=patch)
+        except ValueError as e:
+            error_message = f"Invalid version string: {version!r}"
+            raise ValueError(error_message) from e

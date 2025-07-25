@@ -47,6 +47,6 @@ def watch(
             output if output else "_build", "--watch",
             f"{EXAMPLES_DIR}",
         ], check=True, cwd=DOC_DIR)
-
+    # Gracefully handle user interrupt (Ctrl+C)
     except KeyboardInterrupt:
         click.echo("\nExiting sphinx-autobuild…")

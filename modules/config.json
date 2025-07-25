@@ -6,7 +6,7 @@
   "pipeline": [
     "bookshelf.plugins.edit_tags",
     "bookshelf.plugins.auto_import",
-    "bookshelf.plugins.auto_log_format",
+    "bookshelf.plugins.auto_log_setup",
     "bookshelf.plugins.gen_help",
     "bookshelf.plugins.gen_load"
   ]

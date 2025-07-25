@@ -1,12 +1,13 @@
-from beet import Context, Function, FunctionTag
+from beet import Context, Function
 
 
 def beet_default(ctx: Context) -> None:
-    """Generate a help function for the current module."""
+    """Generate a __help__ function with its tag for the current module."""
     with ctx.override(generate_namespace=ctx.directory.name):
-        function = ctx.generate("__help__",
+        ctx.generate(
+            "__help__",
             documentation=ctx.meta.get("documentation"),
+            module=ctx.directory.name,
             module_name=ctx.meta.get("name"),
             render=Function(source_path="bookshelf/help.jinja"),
         )
-        ctx.generate("help", render=FunctionTag({"values":[function]}))

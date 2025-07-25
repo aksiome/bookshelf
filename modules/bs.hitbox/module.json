@@ -12,6 +12,5 @@
     "tags": ["runtime"]
   },
   "pipeline": [
-    "gen_shapes"
   ]
 }

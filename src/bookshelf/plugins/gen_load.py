@@ -5,13 +5,14 @@ from bookshelf.schemas import Version
 
 
 def beet_default(ctx: Context) -> None:
-    """Generate load related functions for the current module."""
+    """Generate load-related functions and tags for the current module."""
     version = Version.parse(VERSION)
     module = ctx.directory.name[3:]
 
     ctx.require("beet.contrib.lantern_load.base_data_pack")
     ctx.data.function_tags.setdefault("load:load", FunctionTag()).add("#bs.load:load")
 
+    # Generate versioned load functions from templates
     for file, template in [
         (f"resolve/{module}", "process/resolve"),
         (f"v{VERSION}/bundle/append", "bundle/append"),
@@ -36,9 +37,9 @@ def beet_default(ctx: Context) -> None:
         render=Function(source_path="bookshelf/load/process/enumerate.jinja"),
     )
 
+    # Generate load/unload/module tags
     ctx.data.function_tags["bs.load:load"] = gen_load_tag(MODULES)
     ctx.data.function_tags["bs.load:unload"] = gen_unload_tag(MODULES)
-
     ctx.data.function_tags[f"bs.load:module/{module}"] = gen_module_load_tag(
         ctx.directory.name,
         ctx.meta.get("dependencies", []) or [],
@@ -80,12 +81,15 @@ def gen_module_load_tag(
     return FunctionTag({
         "replace": True,
         "values": [
+            # Required dependencies
             f"#bs.load:module/{dep[3:]}"
             for dep in dependencies
         ] + [
+            # Optional weak dependencies
             {"id": f"#bs.load:module/{dep[3:]}", "required": False}
             for dep in weak_dependencies
         ] + [
+            # The module's own __load__ function
             f"{module}:__load__",
         ],
     })

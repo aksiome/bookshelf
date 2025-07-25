@@ -1,5 +1,5 @@
 import logging
-from collections import Counter
+from collections import defaultdict
 from collections.abc import Generator
 from contextlib import contextmanager
 from json import JSONDecodeError
@@ -19,7 +19,7 @@ class LogCounterHandler(logging.Handler):
     def __init__(self) -> None:
         """Initialize the LogCounterHandler."""
         super().__init__()
-        self.counts = Counter()
+        self.counts = defaultdict(int)
 
     def emit(self, record: logging.LogRecord) -> None:
         """Count the log message by its level."""
@@ -29,7 +29,7 @@ class LogCounterHandler(logging.Handler):
 @contextmanager
 def log_counter(
     logger: logging.Logger | None = None,
-) -> Generator[Counter, Any, None]:
+) -> Generator[dict, Any, None]:
     """Context manager to count log messages."""
     logger = logger or logging.getLogger("bookshelf")
     handler = LogCounterHandler()
@@ -45,13 +45,14 @@ def log_counter(
 def log_group(
     message: str,
     logger: logging.Logger | None = None,
-) -> Generator[bool, Any, None]:
+) -> Generator[dict, Any, None]:
     """Context manager to group logs and print a summary at the end."""
     console = Console()
     console.print(Panel.fit(message), style="blue b")
     with log_counter(logger) as counter:
         yield counter
 
+    # Print a final summary message based on what was logged
     match counter["error"], counter["warning"]:
         case 0, 0:
             console.print("\n✅ DONE!\n", style="green b")
@@ -67,7 +68,7 @@ def log_group(
 def log_json_error(
     file: Path,
     logger: logging.Logger | None = None,
-) -> Generator[Counter, Any, None]:
+) -> Generator:
     """Context manager to catch and log JSONDecodeError."""
     try:
         yield
@@ -89,7 +90,7 @@ def log_json_error(
 def log_validation_error(
     file: Path,
     logger: logging.Logger | None = None,
-) -> Generator[Counter, Any, None]:
+) -> Generator:
     """Context manager to catch and log Pydantic ValidationError."""
     try:
         yield

@@ -18,8 +18,9 @@ class ExpandedModule(Module):
     @classmethod
     def from_file(cls, file: Path, **extra: object) -> Self:
         """Create an ExpandedModule instance from a JSON file."""
+        # Collect all JSON files inside the data directory of the module
         features = sorted((file.parent / "data").rglob("*.json"))
-
+        # Attempt to create Feature instances, filtering out None
         extra["features"] = list(filter(None, (
             Feature.try_from_file(feature)
             for feature in features
@@ -38,11 +39,12 @@ class Manifest(BaseModel):
     def build(cls) -> Self | None:
         """Build the manifest by gathering modules and features."""
         with log_counter() as counter:
-            manifest = cls(modules=filter(None, (
+            # Load modules in sorted order and filter out any failures
+            manifest = cls(modules=list(filter(None, (
                 ExpandedModule.try_from_file(MODULES_DIR / module / "module.json")
                 for module in sorted(MODULES)
-            )))
-
+            ))))
+        # Return None if any errors occurred during loading
         return manifest if counter["error"] == 0 else None
 
     def save(self, file: Path) -> int:

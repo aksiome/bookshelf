@@ -35,31 +35,6 @@ def modules() -> None:
     """Modules-related commands."""
 
 
-@modules.command()
-@click.argument("modules", nargs=-1)
-def build(modules: tuple[str, ...]) -> None:
-    """Build the specified modules."""
-    with log_step("🔨 Building project…"):
-        Project(create_config(
-            modules=modules,
-            output=BUILD_DIR,
-            require=["bookshelf.plugins.load_tests"],
-        )).build()
-
-
-@modules.command()
-def release() -> None:
-    """Build zipped modules for a release."""
-    with log_step("🔨 Building project…") as logger:
-        Project(create_config(
-            modules=["@*", *MODULES],
-            meta={"autosave":{"link":False}},
-            zipped=True,
-            require=["bookshelf.plugins.release_pack"],
-        )).build()
-
-    sys.exit(logger.errors)
-
 
 @modules.command()
 @click.argument("modules", nargs=-1)

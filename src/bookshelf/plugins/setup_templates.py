@@ -4,7 +4,7 @@ from beet import Context
 
 
 def beet_default(ctx: Context) -> None:
-    """Configure the Jinja template engine with necessary functions."""
+    """Configure the Jinja template engine by exposing utility functions."""
     ctx.require("beet.contrib.inline_function_tag")
     ctx.template.add_package("bookshelf")
     ctx.template.expose("now", datetime.now)

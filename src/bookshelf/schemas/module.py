@@ -13,6 +13,8 @@ from bookshelf.utils import load_json
 
 logger = logging.getLogger(__name__)
 
+RECOMMENDED_FIELDS = ["tags"]
+
 
 class ModuleKind(StrEnum):
     """Enumeration for module kinds."""
@@ -50,11 +52,11 @@ class Module(BaseModel):
     documentation: str = Field(pattern=rf"^{re.escape(DOC_URL)}/en/latest/modules/.+$")
 
     kind: ModuleKind
-    tags: list[str] = []
-    authors: list[str] = []
-    contributors: list[str] = []
-    dependencies: list[str] = []
-    weak_dependencies: list[str] = []
+    tags: list[str] = Field(default_factory=list)
+    authors: list[str] = Field(default_factory=list)
+    contributors: list[str] = Field(default_factory=list)
+    dependencies: list[str] = Field(default_factory=list)
+    weak_dependencies: list[str] = Field(default_factory=list)
 
     @classmethod
     def from_file(cls, file: Path, **extra: object) -> Self:
@@ -63,14 +65,14 @@ class Module(BaseModel):
         meta = data.get("meta", {}).copy()
 
         meta["kind"] = ModuleKind.try_from_data(data)
+        # Resolve url metadata fields like icon, readme, banner
         resolve_file_urls(meta, file.parent, (
             ("icon", "pack.png"),
             ("readme", "README.md"),
             ("banner", "banner.png"),
         ))
 
-        recommended_fields = ["tags"]
-        for field in recommended_fields:
+        for field in RECOMMENDED_FIELDS:
             if field not in meta or not meta[field]:
                 logger.warning(
                     "Module '%s' is missing recommended field 'meta.%s'.",

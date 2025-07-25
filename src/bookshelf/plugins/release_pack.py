@@ -1,4 +1,6 @@
 import json
+import logging
+import os
 import re
 import time
 from collections.abc import Generator
@@ -9,20 +11,20 @@ from beet import Context, PluginOptions, configurable
 
 from bookshelf.definitions import (
     DOC_DIR,
+    GITHUB_CONTENT_URL,
     GITHUB_REPO,
     MC_VERSIONS,
     MODRINTH_API,
-    RAW_PROJECT_URL,
     RELEASE_DIR,
     ROOT_DIR,
     SMITHED_API,
     VERSION,
 )
-from bookshelf.logger import get_step_logger
-from bookshelf.utils import getenv_redacted
 
-MODRINTH_TOKEN = getenv_redacted("MODRINTH_TOKEN")
-SMITHED_TOKEN = getenv_redacted("SMITHED_TOKEN")
+logger = logging.getLogger(__name__)
+
+MODRINTH_TOKEN = os.getenv("MODRINTH_TOKEN")
+SMITHED_TOKEN = os.getenv("SMITHED_TOKEN")
 
 
 class PublishOptions(PluginOptions):
@@ -61,7 +63,7 @@ def beet_default(ctx: Context) -> Generator:
             version_name=f"{ctx.directory.name} v{VERSION}",
         ))
     else:
-        get_step_logger().warning(
+        logger.warning(
             "Metadata file for module '%s' is missing optional key 'slug'. "
             "A slug is required for publishing to platforms.",
             ctx.directory.name,
@@ -74,7 +76,7 @@ def publish_pack(_: Context, opts: PublishOptions) -> None:
     if not MODRINTH_TOKEN:
         return
 
-    get_step_logger().debug("Uploading module '%s' to Modrinth...", opts.module_name)
+    logger.debug("Uploading module '%s' to Modrinth...", opts.module_name)
     if not (update_modrinth_project(opts) or create_modrinth_project(opts)):
         return
     create_modrinth_version(opts)
@@ -82,7 +84,7 @@ def publish_pack(_: Context, opts: PublishOptions) -> None:
     if not SMITHED_TOKEN:
         return
 
-    get_step_logger().debug("Uploading module '%s' to Smithed...", opts.module_name)
+    logger.debug("Uploading module '%s' to Smithed...", opts.module_name)
     if update_smithed_project(opts):
         create_smithed_version(opts)
     else:
@@ -202,7 +204,7 @@ def create_modrinth_version(opts: PublishOptions) -> bool:
             "User-Agent": "mcbookshelf/bookshelf/release (contact@gunivers.net)",
         },
     ).status_code == requests.codes["ok"]:
-        get_step_logger().warning(
+        logger.warning(
             "The version '%s' for the module '%s' already exists on Modrinth. "
             "This version will not be published again to avoid duplication.",
             VERSION,
@@ -246,10 +248,10 @@ def create_smithed_project(opts: PublishOptions) -> bool:
             "display": {
                 "name": opts.module_name,
                 "description": opts.module_description,
-                "icon": RAW_PROJECT_URL.format(
+                "icon": GITHUB_CONTENT_URL.format(
                     opts.module_icon.relative_to(ROOT_DIR).as_posix(),
                 ),
-                "webPage": RAW_PROJECT_URL.format(
+                "webPage": GITHUB_CONTENT_URL.format(
                     opts.module_readme.relative_to(ROOT_DIR).as_posix(),
                 ),
                 "urls": {
@@ -292,7 +294,7 @@ def create_smithed_version(opts: PublishOptions) -> bool:
         return False
 
     if any(version["name"] == VERSION for version in response.json()):
-        get_step_logger().warning(
+        logger.warning(
             "The version '%s' for the module '%s' already exists on Smithed. "
             "This version will not be published again to avoid duplication.",
             VERSION,
@@ -340,10 +342,10 @@ def create_smithed_pack_version(
                     },
                 }
 
-        get_step_logger().debug("Modrinth version not ready, retrying in %ds...", delay)
+        logger.debug("Modrinth version not ready, retrying in %ds...", delay)
         time.sleep(delay)
 
-    get_step_logger().warning("Timed out waiting for Modrinth version '%s'.", VERSION)
+    logger.warning("Timed out waiting for Modrinth version '%s'.", VERSION)
     return {}
 
 
@@ -351,12 +353,12 @@ def handle_response_error(response: requests.Response, err_message: str) -> bool
     """Check for success and log errors."""
     if response.ok:
         try:
-            get_step_logger().error(
+            logger.error(
                 "%s %s", err_message,
                 response.json(),
             )
         except json.JSONDecodeError:
-            get_step_logger().error(
+            logger.error(
                 "%s %s",
                 err_message,
                 response.text,

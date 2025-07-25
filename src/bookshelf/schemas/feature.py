@@ -15,6 +15,7 @@ logger = logging.getLogger(__name__)
 class Updated(BaseModel):
     """Represents metadata about when a feature or module was last updated."""
 
+    # Date string in YYYY/MM/DD format
     date: str = Field(pattern=r"^\d{4}/(0[1-9]|1[0-2])/(0[1-9]|[1-2]\d|3[0-1])$")
     minecraft_version: str
 
@@ -26,10 +27,9 @@ class Feature(BaseModel):
     kind: str
     documentation: str = Field(pattern=rf"^{re.escape(DOC_URL)}/en/latest/modules/.+$")
     authors: list[str]
-    contributors: list[str] = []
+    contributors: list[str] = Field(default_factory=list)
     created: Updated
     updated: Updated
-
 
     @classmethod
     def from_file(cls, file: Path, **extra: object) -> Self:
@@ -38,8 +38,8 @@ class Feature(BaseModel):
         meta = data.get("__bookshelf__", {})
 
         if not meta.get("feature"):
-            err = f"File '{file}' is not a valid feature"
-            raise ValueError(err)
+            error_message = f"File '{file}' is not a valid feature"
+            raise ValueError(error_message)
 
         feature_id, feature_kind = resolve_feature(file)
         return cls(id=feature_id, kind=feature_kind, **meta, **extra)
@@ -62,11 +62,12 @@ class Feature(BaseModel):
 def resolve_feature(file: Path) -> tuple[str, str]:
     """Extract the feature ID and kind from a module file path."""
     parts = file.relative_to(MODULES_DIR).parts
+    # Special case for tags, prepend '#' and append '_tag' to kind
     if parts[3] == "tags":
         feature_id = f"#{parts[2]}:{'/'.join(parts[5:]).removesuffix('.json')}"
         feature_kind = f"{parts[4]}_tag"
     else:
         feature_id = f"{parts[2]}:{'/'.join(parts[4:]).removesuffix('.json')}"
         feature_kind = parts[3]
-
+    # Feature ID example: 'module:feature/path/to/feature'
     return feature_id, feature_kind

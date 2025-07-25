@@ -1,18 +1,15 @@
-import io
 import json
 import re
 import shutil
-from collections.abc import Callable, Generator
-from contextlib import contextmanager
+from collections.abc import Callable
 from datetime import datetime, timezone
 from functools import cache
 from pathlib import Path
-from typing import IO
 
-import portalocker
 from jinja2 import Template
 from pydantic import BaseModel
 
+# Cached UTC year for templating
 YEAR = datetime.now(timezone.utc).year
 
 
@@ -41,6 +38,7 @@ def render_template(file: Path, **kwargs: dict[str, object]) -> str:
 def render_snbt(obj: object) -> str:
     """Render a Python object into Minecraft's SNBT (stringified NBT) format."""
     def quote_key(k: str) -> str:
+        # Quote keys that contain colons or non-alphanumeric characters
         return f'"{k}"' if ":" in k or not re.fullmatch(r"[A-Za-z0-9]+", k) else k
 
     for kind, handler in {
@@ -59,7 +57,7 @@ def render_snbt(obj: object) -> str:
     }.items():
         if isinstance(obj, kind):
             return handler(obj)
-
+    # Fallback: just stringify
     return str(obj)
 
 
@@ -86,48 +84,9 @@ def gen_loot_table_tree[T](
 
         left_tree = subtree(left)
         right_tree = subtree(right)
+        # Attach condition only to left branch to short-circuit early
         left_tree["conditions"] = conditions(left)
 
         return {"type":"alternatives","children":[left_tree, right_tree]}
 
     return {"pools":[{"rolls":1,"entries":[subtree(items)]}]}
-
-
-@contextmanager
-def threadsafe_open() -> Generator[None, None, None]:
-    """Patch Path.open to make file operations thread-safe using file locks.
-
-    This is an intentional hack: it replaces Path.open with a version that returns
-    a context manager. As a result, Path.open must now be used with a 'with' statement.
-    """
-    _orig_open = Path.open
-
-    def locked_open( # noqa: PLR0913
-        self, # noqa: ANN001
-        mode="r", # noqa: ANN001
-        buffering=-1, # noqa: ANN001
-        encoding=None, # noqa: ANN001
-        errors=None, # noqa: ANN001
-        newline=None, # noqa: ANN001
-    ) -> IO:
-        """Open file and lock it for thread-safe reading or writing."""
-        if "b" not in mode:
-            encoding = io.text_encoding(encoding)
-
-        write_modes = {"w", "a", "x"}
-        is_write_mode = any(m in mode for m in write_modes) or "+" in mode
-        lock_type = portalocker.LOCK_EX if is_write_mode else portalocker.LOCK_SH
-        return portalocker.Lock(
-            self,
-            mode,
-            flags=lock_type,
-            buffering=buffering,
-            errors=errors,
-            newline=newline,
-        )
-
-    Path.open = locked_open
-    try:
-        yield
-    finally:
-        Path.open = _orig_open
