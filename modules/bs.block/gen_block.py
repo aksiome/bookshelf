@@ -49,10 +49,11 @@ def beet_default(ctx: Context) -> None:
     """Generate files used by the bs.block module."""
     namespace = ctx.directory.name
     blocks = minecraft.get_blocks(ctx, MC_VERSIONS[-1])
+    tags = minecraft.TagManager(f"{namespace}:internal")
 
-    loot_table = make_block_loot_table(blocks)
+    loot_table = make_block_loot_table(blocks, tags)
     ctx.generate(f"{namespace}:internal/get_type", render=loot_table)
-    loot_table = make_block_loot_table(blocks, f"{namespace}:internal")
+    loot_table = make_block_loot_table(blocks, tags, f"{namespace}:internal")
     ctx.generate(f"{namespace}:internal/get_block", render=loot_table)
 
     for state in {s.group: s for b in blocks for s in b.properties}.values():
@@ -78,7 +79,8 @@ def beet_default(ctx: Context) -> None:
         groups = defaultdict(list)
         for block in blocks:
             groups[attribute(block)].append(block)
-        merge_attr_predicate(ctx.data.predicates.get(f"{namespace}:{name}"), groups)
+        predicate = ctx.data.predicates.get(f"{namespace}:{name}")
+        merge_attr_predicate(predicate, groups, tags)
 
     for name, attribute in ATTR_LOOT_TABLES:
         seen = set()
@@ -90,8 +92,11 @@ def beet_default(ctx: Context) -> None:
                 file = make_attr_state_loot_table(name, value)
                 ctx.generate(f"{namespace}:internal/{name}_{value.group}", render=file)
 
-        file = make_attr_loot_table(name, groups, f"{namespace}:internal")
+        file = make_attr_loot_table(name, groups, tags, f"{namespace}:internal")
         ctx.generate(f"{namespace}:internal/get_{name}", render=file)
+
+    for name, tag in tags.finalize().items():
+        ctx.generate(name, tag)
 
 
 def format_types_table(blocks: Sequence[Block]) -> dict:
@@ -142,6 +147,7 @@ def format_state_loot_entry(entry: dict, state: StateProperty, option: str) -> d
 
 def make_block_loot_table(
     blocks: Sequence[Block],
+    tags: minecraft.TagManager,
     path: str | None = None,
 ) -> LootTable:
     """Create a loot table to retrieve block data."""
@@ -156,7 +162,9 @@ def make_block_loot_table(
         }, block),
         lambda blocks: [{
             "condition": "location_check",
-            "predicate": {"block": {"blocks": [b.type[10:] for b in blocks]}},
+            "predicate": {
+                "block": {"blocks": tags.register(b.type[10:] for b in blocks)},
+            },
         }],
     )
 
@@ -181,6 +189,7 @@ def make_block_state_loot_table(state: StateProperty, path: str) -> LootTable:
 def make_attr_loot_table[T](
     attr: str,
     groups: dict[StateValue[T], list[Block]],
+    tags: minecraft.TagManager,
     path: str,
 ) -> LootTable:
     """Create a loot table for a collection of blocks grouped by attribute."""
@@ -199,10 +208,10 @@ def make_attr_loot_table[T](
         },
         lambda entries: [{
             "condition": "location_check",
-            "predicate": {"block": {"blocks": [
+            "predicate": {"block": {"blocks": tags.register([
                 block.type[10:]
                 for _, blocks in entries for block in blocks
-            ]}},
+            ])}},
         }],
     )
 
@@ -222,6 +231,7 @@ def make_attr_state_loot_table(attr: str, entry: StatePredicate) -> LootTable:
 def merge_attr_predicate(
     predicate: Predicate,
     groups: dict[StateValue[bool], list[Block]],
+    tags: minecraft.TagManager,
 ) -> None:
     """Create a predicate for a collection of blocks grouped by attribute."""
     def optimize_entry(entry: dict) -> dict | None:
@@ -257,10 +267,14 @@ def merge_attr_predicate(
         "terms": [optimize_entry({
             "condition": "all_of", "terms":[{
                 "condition": "location_check",
-                "predicate": {"block": {"blocks": [b.type[10:] for b in blocks]}},
+                "predicate": {"block": {
+                    "blocks": tags.register([b.type[10:] for b in blocks]),
+                }},
             }, build_node(group.tree)],
         }) if isinstance(group, StatePredicate) else {
             "condition": "location_check",
-            "predicate": {"block": {"blocks": [b.type[10:] for b in blocks]}},
+            "predicate": {"block": {
+                "blocks": tags.register([b.type[10:] for b in blocks]),
+            }},
         } for group, blocks in groups.items() if group],
     }))

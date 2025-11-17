@@ -1,13 +1,14 @@
 from __future__ import annotations
 
 import re
-from collections.abc import Callable, Mapping, Sequence
+from collections.abc import Callable, Iterable, Mapping, Sequence
+from dataclasses import dataclass, field
 from functools import singledispatch, wraps
 from itertools import chain
 from typing import TYPE_CHECKING
 
 import orjson
-from beet import BlockTag, LootTable
+from beet import BlockTag, LootTable, TagFile
 from pydantic import BaseModel
 
 from bookshelf.common import json
@@ -98,7 +99,10 @@ def make_block_tag(
 ) -> BlockTag:
     """Create a block tag for blocks that match the predicate."""
     values = chain(extras or [], (block.type for block in blocks if predicate(block)))
-    return BlockTag({"replace":True,"values":sorted(values)})
+    return BlockTag({
+        "replace": True,
+        "values": [{"id": value, "required": False} for value in sorted(values)],
+    })
 
 
 def make_loot_table(content: dict) -> LootTable:
@@ -160,3 +164,43 @@ def make_loot_table_state[T](
         return {"type":"alternatives","children":children}
 
     return make_loot_table({"pools":[{"rolls":1,"entries":[build_node(entry.tree)]}]})
+
+
+@dataclass
+class TagManager[T: TagFile]:
+    """TagManager for registering tags and reusing them."""
+
+    path: str
+    factory: Callable[[Sequence[str]], T] = lambda values: BlockTag({
+        "replace": True,
+        "values": [{"id": value, "required": False} for value in sorted(values)],
+    })
+
+    _next_id: int = field(default=1, init=False)
+    _path_to_tag: dict[str, frozenset[str]] = field(default_factory=dict, init=False)
+    _tag_to_path: dict[frozenset[str], str] = field(default_factory=dict, init=False)
+
+    def register(self, entries: Iterable[str]) -> str:
+        """Register a tag from a collection of IDs."""
+        tag = frozenset(entries)
+        if tag in self._tag_to_path:
+            return self._tag_to_path[tag]
+        path = f"{self.path}/{self._next_id}"
+        self._path_to_tag[path] = tag
+        self._tag_to_path[tag] = path
+        self._next_id += 1
+        return path
+
+    def finalize(self) -> dict[str, T]:
+        """Replace subsets in tags with references to other tags."""
+        working = {tid: set(vals) for tid, vals in self._path_to_tag.items()}
+        for tid, elems in working.items():
+            for other_tid, other_set in self._path_to_tag.items():
+                if tid == other_tid:
+                    continue
+                if other_set.issubset(elems):
+                    for b in other_set:
+                        elems.remove(b)
+                    elems.add(f"#{other_tid}")
+
+        return { tid: self.factory(elems) for tid, elems in working.items() }
