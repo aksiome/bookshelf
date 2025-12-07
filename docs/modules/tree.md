@@ -169,7 +169,7 @@ You can find below below all structures available in this module.
 
 ---
 
-### Dark Oak
+### Dark oak
 
 ::::{grid} 2 3 3 3
 
@@ -248,7 +248,7 @@ You can find below below all structures available in this module.
 
 ---
 
-### Dead Spruce
+### Dead spruce
 
 ::::{grid} 2 3 3 3
 

@@ -38,7 +38,7 @@ You can find below all functions available in this module.
 
 ---
 
-### Absolute Max
+### Absolute max
 
 ```{function} #bs.vector:abs_max
 
@@ -51,7 +51,7 @@ Get the number furthest to zero, regardless of sign.
   **Return | Score `$vector.abs_max bs.out`**: Component with the value furthest from 0.
 ```
 
-*Example: I want to get the max component of the vector (1000, 2000, 3000):*
+*Example: get the max component of the vector [1000, 2000, 3000]*
 
 ```mcfunction
 # Define the vector
@@ -70,7 +70,7 @@ tellraw @a [{"text":" Max component: ","color":"dark_gray"},{"score":{"name":"$v
 
 ---
 
-### Absolute Min
+### Absolute min
 
 ```{function} #bs.vector:abs_min
 
@@ -83,7 +83,7 @@ Get the number closest to zero, regardless of sign.
   **Return | Score `$vector.abs_min bs.out`**: Component with the value closest to 0.
 ```
 
-*Example: I want to get the min component of the vector (1000, 2000, 3000):*
+*Example: get the min component of the vector [1000, 2000, 3000]*
 
 ```mcfunction
 # Define the vector
@@ -102,7 +102,7 @@ tellraw @a [{"text":" Min component: ","color":"dark_gray"},{"score":{"name":"$v
 
 ---
 
-### Basis Rotation 3D
+### Basis rotation 3D
 
 ```{function} #bs.vector:basis_rot_3d {scaling:<value>}
 
@@ -132,7 +132,7 @@ This system uses the Minecraft coordinate system. Thus:
 - $\theta=0$ (starting point of the vertical angle) is on the horizontal plane.
 ```
 
-*Example: A block is located at ~2 ~5 ~10 relative to me, I want to have this position in local coordinate (^? ^? ^?):*
+*Example: a block is located at ~2 ~5 ~10, get this position in local coordinate (^? ^? ^?)*
 
 ```mcfunction
 # One time
@@ -154,7 +154,7 @@ function #bs.vector:basis_rot_3d {scaling:1000}
 tellraw @a [{"text": "X = ", "color": "dark_gray"},{"score":{"name":"$vector.basis_rot_3d.0", "objective": "bs.out"}, "color": "gold"},{"text":", Y = ", "color": "dark_gray"},{"score":{"name":"$vector.basis_rot_3d.1", "objective": "bs.out"},"color":"gold"},{"text":", Z = ","color":"dark_gray"},{"score":{"name":"$vector.basis_rot_3d.2","objective":"bs.out"},"color":"gold"}]
 ```
 
-*Example: I want to have a vector pointing to where I'm looking at, but in relative coordinates ~X ~Y ~Z:*
+*Example: get a vector pointing to looked at position, in relative coordinates ~X ~Y ~Z*
 
 ```mcfunction
 # Once

@@ -1,4 +1,4 @@
-# 🏅 XP
+# 🏅 Xp
 
 **`#bs.xp:help`**
 
@@ -16,7 +16,7 @@ You can find below all functions available in this module.
 
 ---
 
-### Add / Remove
+### Add / remove
 
 :::::{tab-set}
 ::::{tab-item} Levels
@@ -38,7 +38,7 @@ Add levels to the player.
   **State**: Players' XP is updated.
 ```
 
-*Example: Add 42 levels:*
+*Example: add 42 levels*
 
 ```mcfunction
 # Once (execute on you)
@@ -68,7 +68,7 @@ Add experience points to the player.
   **State**: Players' XP is updated.
 ```
 
-*Example: Add 42 experience points:*
+*Example: add 42 experience points*
 
 ```mcfunction
 # Once (execute on you)
@@ -98,7 +98,7 @@ Fill the XP bar partially.
   **State**: Players' XP is updated.
 ```
 
-*Example: Add 25% to the fill level of your bar:*
+*Example: add 25% to the fill level of your bar*
 
 ```mcfunction
 # Once (execute on you)
@@ -138,7 +138,7 @@ Get the total amount of points required to reach the next level.
   **Return | Score `$xp.get_max_points bs.out`**: Total amount of points required for the next level.
 ```
 
-*Example: Get the total amount of points required to pass to the next level:*
+*Example: get the total amount of points required to pass to the next level*
 
 ```mcfunction
 # Once (execute on you)
@@ -162,7 +162,7 @@ Get the remaining amount of points needed to reach the next level.
   **Return | Score `$xp.get_remaining_points bs.out`**: Points needed for the next level.
 ```
 
-*Example: Get the amount of points needed to pass to the next level:*
+*Example: get the amount of points needed to pass to the next level*
 
 ```mcfunction
 # Once (execute on you)
@@ -186,7 +186,7 @@ Get the sum of all points a player has gathered.
   **Return | Score `$xp.get_total_points bs.out`**: Total amount of points.
 ```
 
-*Example: Get your total amount of points:*
+*Example: get your total amount of points*
 
 ```mcfunction
 # Once (execute on you)
@@ -216,7 +216,7 @@ Get the fill progress of the XP bar.
   **Return | Score `$xp.get_progress bs.out`**: Fill level of the XP bar after scaling.
 ```
 
-*Example: Get the fill percentage of the xp bar:*
+*Example: get the fill percentage of the xp bar*
 
 ```mcfunction
 # Once (execute on you)
@@ -255,7 +255,7 @@ Set players levels.
   **State**: Players XP is updated.
 ```
 
-*Example: Set your level to 42:*
+*Example: set your level to 42*
 
 ```mcfunction
 # Once (execute on you)
@@ -285,7 +285,7 @@ Set players experience points.
   **State**: Players XP is updated.
 ```
 
-*Example: Set your points to 42:*
+*Example: set your points to 42*
 
 ```mcfunction
 # Once (execute on you)
@@ -315,7 +315,7 @@ Set players total experience points.
   **State**: Players XP is updated.
 ```
 
-*Example: Set your total XP amount to 42:*
+*Example: set your total XP amount to 42*
 
 ```mcfunction
 # Once (execute on you)
@@ -345,7 +345,7 @@ Fill the XP bar partially.
   **State**: Players XP is updated.
 ```
 
-*Example: Fill your bar at 50%:*
+*Example: fill your bar at 50%*
 
 ```mcfunction
 # Once

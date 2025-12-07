@@ -42,7 +42,7 @@ You can find below all functions available in this module.
 
 ```{function} #bs.spline:evaluate_bezier
 
-Evaluate a Bézier spline composed of one or more segments. Each segment is defined by four consecutive control points, with the last point of a segment reused as the first of the next.
+Evaluate a [Bézier spline](#about-splines) composed of one or more segments. Each segment is defined by four consecutive control points, with the last point of a segment reused as the first of the next.
 
 :Inputs:
   **Storage `bs:in spline.evaluate_bezier`**:
@@ -56,7 +56,7 @@ Evaluate a Bézier spline composed of one or more segments. Each segment is defi
   **Storage `bs:out spline.evaluate_bezier`**: {nbt}`list` The interpolated point (1D, 2D, or 3D) on the spline at the given time.
 ```
 
-*Example: Evaluate the point in the middle of a Bézier curve in 2D space ([visualize the curve](#about-splines)):*
+*Example: evaluate the point in the middle of a Bézier curve in 2D space*
 
 ```mcfunction
 data modify storage bs:in spline.evaluate_bezier set value {points:[[0,0],[1,2],[2,-1],[3,1]],time:0.5}
@@ -69,7 +69,7 @@ data get storage bs:out spline.evaluate_bezier
 
 ```{function} #bs.spline:evaluate_bspline
 
-Evaluate a B-spline composed of one or more segments. Each segment is defined by four consecutive control points, with three points of a segment reused in the next to ensure smooth blending.
+Evaluate a [B-spline](#about-splines) composed of one or more segments. Each segment is defined by four consecutive control points, with three points of a segment reused in the next to ensure smooth blending.
 
 :Inputs:
   **Storage `bs:in spline.evaluate_bspline`**:
@@ -83,7 +83,7 @@ Evaluate a B-spline composed of one or more segments. Each segment is defined by
   **Storage `bs:out spline.evaluate_bspline`**: {nbt}`list` The interpolated point (1D, 2D, or 3D) on the spline at the given time.
 ```
 
-*Example: Evaluate the point in the middle of a B-Spline curve in 2D space ([visualize the curve](#about-splines)):*
+*Example: evaluate the point in the middle of a B-Spline curve in 2D space*
 
 ```mcfunction
 data modify storage bs:in spline.evaluate_bspline set value {points:[[0,0],[1,2],[2,-1],[3,1]],time:0.5}
@@ -96,7 +96,7 @@ data get storage bs:out spline.evaluate_bspline
 
 ```{function} #bs.spline:evaluate_catmull_rom
 
-Evaluate a Catmull-Rom spline composed of one or more segments. Each segment is defined by four consecutive control points, with three points of a segment reused in the next to ensure smooth blending.
+Evaluate a [Catmull-Rom spline](#about-splines) composed of one or more segments. Each segment is defined by four consecutive control points, with three points of a segment reused in the next to ensure smooth blending.
 
 :Inputs:
   **Storage `bs:in spline.evaluate_catmull_rom`**:
@@ -110,7 +110,7 @@ Evaluate a Catmull-Rom spline composed of one or more segments. Each segment is 
   **Storage `bs:out spline.evaluate_catmull_rom`**: {nbt}`list` The interpolated point (1D, 2D, or 3D) on the spline at the given time.
 ```
 
-*Example: Evaluate the point in the middle of a Catmull-Rom curve in 2D space ([visualize the curve](#about-splines)):*
+*Example: evaluate the point in the middle of a Catmull-Rom curve in 2D space*
 
 ```mcfunction
 data modify storage bs:in spline.evaluate_catmull_rom set value {points:[[0,0],[1,2],[2,-1],[3,1]],time:0.5}
@@ -123,7 +123,7 @@ data get storage bs:out spline.evaluate_catmull_rom
 
 ```{function} #bs.spline:evaluate_hermite
 
-Evaluate a Hermite spline composed of one or more segments. Each segment is defined by two positions and their associated tangents, with two points (the second position and its tangent) reused as the first of the next segment. All coordinates and tangents are absolute.
+Evaluate a [Hermite spline](#about-splines) composed of one or more segments. Each segment is defined by two positions and their associated tangents, with two points (the second position and its tangent) reused as the first of the next segment. All coordinates and tangents are absolute.
 
 :Inputs:
   **Storage `bs:in spline.evaluate_hermite`**:
@@ -137,7 +137,7 @@ Evaluate a Hermite spline composed of one or more segments. Each segment is defi
   **Storage `bs:out spline.evaluate_hermite`**: {nbt}`list` The interpolated point (1D, 2D, or 3D) on the spline at the given time.
 ```
 
-*Example: Evaluate the point in the middle of a Hermite curve in 2D space ([visualize the curve](#about-splines)):*
+*Example: evaluate the point in the middle of a Hermite curve in 2D space*
 
 ```mcfunction
 data modify storage bs:in spline.evaluate_hermite set value {points:[[0,0],[1,2],[2,-1],[3,1]],time:0.5}
@@ -164,7 +164,7 @@ Evaluate a linear spline, which connects each pair of consecutive points with a 
   **Storage `bs:out spline.evaluate_linear`**: {nbt}`list` The interpolated point (1D, 2D, or 3D) on the spline at the given time.
 ```
 
-*Example: Evaluate the midpoint between two positions in 2D space:*
+*Example: evaluate the midpoint between two positions in 2D space*
 
 ```mcfunction
 data modify storage bs:in spline.evaluate_linear set value {points:[[0,0],[4,2],[6,5]],time:0.5}
@@ -184,7 +184,7 @@ data get storage bs:out spline.evaluate_linear
 
 ```{function} #bs.spline:sample_bezier
 
-Sample a Bézier spline composed of one or more segments. Each segment is defined by four consecutive control points, with the last point of a segment reused as the first of the next.
+Sample a [Bézier spline](#about-splines) composed of one or more segments. Each segment is defined by four consecutive control points, with the last point of a segment reused as the first of the next.
 
 :Inputs:
   **Storage `bs:in spline.sample_bezier`**:
@@ -198,7 +198,7 @@ Sample a Bézier spline composed of one or more segments. Each segment is define
   **Storage `bs:out spline.sample_bezier`**: {nbt}`list` The sampled points along the spline.
 ```
 
-*Example: Sample 10 points along a Bézier curve in 2D space ([visualize the curve](#about-splines)):*
+*Example: sample 10 points along a Bézier curve in 2D space*
 
 ```mcfunction
 data modify storage bs:in spline.sample_bezier set value {points:[[0,0],[1,2],[2,-1],[3,1]],step:0.1}
@@ -211,7 +211,7 @@ data get storage bs:out spline.sample_bezier
 
 ```{function} #bs.spline:sample_bspline
 
-Sample a B-Spline composed of one or more segments. Each segment is defined by four consecutive control points, with three points of a segment reused in the next to ensure smooth blending.
+Sample a [B-Spline](#about-splines) composed of one or more segments. Each segment is defined by four consecutive control points, with three points of a segment reused in the next to ensure smooth blending.
 
 :Inputs:
   **Storage `bs:in spline.sample_bspline`**:
@@ -225,7 +225,7 @@ Sample a B-Spline composed of one or more segments. Each segment is defined by f
   **Storage `bs:out spline.sample_bspline`**: {nbt}`list` The sampled points along the spline.
 ```
 
-*Example: Sample 10 points along a B-Spline curve in 2D space ([visualize the curve](#about-splines)):*
+*Example: sample 10 points along a B-Spline curve in 2D space*
 
 ```mcfunction
 data modify storage bs:in spline.sample_bspline set value {points:[[0,0],[1,2],[2,-1],[3,1]],step:0.1}
@@ -238,7 +238,7 @@ data get storage bs:out spline.sample_bspline
 
 ```{function} #bs.spline:sample_catmull_rom
 
-Sample a Catmull-Rom spline composed of one or more segments. Each segment is defined by four consecutive control points, with three points of a segment reused in the next to ensure smooth blending.
+Sample a [Catmull-Rom spline](#about-splines) composed of one or more segments. Each segment is defined by four consecutive control points, with three points of a segment reused in the next to ensure smooth blending.
 
 :Inputs:
   **Storage `bs:in spline.sample_catmull_rom`**:
@@ -252,7 +252,7 @@ Sample a Catmull-Rom spline composed of one or more segments. Each segment is de
   **Storage `bs:out spline.sample_catmull_rom`**: {nbt}`list` The sampled points along the spline.
 ```
 
-*Example: Sample 10 points along a Catmull-Rom curve in 2D space ([visualize the curve](#about-splines)):*
+*Example: sample 10 points along a Catmull-Rom curve in 2D space*
 
 ```mcfunction
 data modify storage bs:in spline.sample_catmull_rom set value {points:[[0,0],[1,2],[2,-1],[3,1]],step:0.1}
@@ -265,7 +265,7 @@ data get storage bs:out spline.sample_catmull_rom
 
 ```{function} #bs.spline:sample_hermite
 
-Sample a Hermite spline composed of one or more segments. Each segment is defined by two positions and their associated tangents, with two points (the second position and its tangent) reused as the first of the next segment. All coordinates and tangents are absolute.
+Sample a [Hermite spline](#about-splines) composed of one or more segments. Each segment is defined by two positions and their associated tangents, with two points (the second position and its tangent) reused as the first of the next segment. All coordinates and tangents are absolute.
 
 :Inputs:
   **Storage `bs:in spline.sample_hermite`**:
@@ -279,7 +279,7 @@ Sample a Hermite spline composed of one or more segments. Each segment is define
   **Storage `bs:out spline.sample_hermite`**: {nbt}`list` The sampled points along the spline.
 ```
 
-*Example: Sample 10 points along a Hermite curve in 2D space ([visualize the curve](#about-splines)):*
+*Example: sample 10 points along a Hermite curve in 2D space*
 
 ```mcfunction
 data modify storage bs:in spline.sample_hermite set value {points:[[0,0],[1,2],[2,-1],[3,1]],step:0.1}
@@ -306,7 +306,7 @@ Sample a linear spline, which connects each pair of consecutive points with a st
   **Storage `bs:out spline.sample_linear`**: {nbt}`list` The sampled points along the spline.
 ```
 
-*Example: Sample evenly spaced points along a polyline in 2D space:*
+*Example: sample evenly spaced points along a polyline in 2D space*
 
 ```mcfunction
 data modify storage bs:in spline.sample_linear set value {points:[[0,0],[4,2],[6,5]],step:0.25}
@@ -326,7 +326,7 @@ data get storage bs:out spline.sample_linear
 
 ```{function} #bs.spline:stream_bezier
 
-Stream a Bézier spline composed of one or more segments. Each segment is defined by four consecutive control points, with the last point of a segment reused as the first of the next. This function processes each step over multiple ticks.
+Stream a [Bézier spline](#about-splines) composed of one or more segments. Each segment is defined by four consecutive control points, with the last point of a segment reused as the first of the next. This function processes each step over multiple ticks.
 
 :Inputs:
   **Storage `bs:in spline.stream_bezier`**:
@@ -339,7 +339,7 @@ Stream a Bézier spline composed of one or more segments. Each segment is define
   :::
 ```
 
-*Example: Stream 10 points along a Bézier curve in 2D space and execute a command at each step ([visualize the curve](#about-splines)):*
+*Example: stream 10 points along a Bézier curve in 2D space and execute a command at each step*
 
 ```mcfunction
 data modify storage bs:in spline.stream_bezier set value {points:[[0,0],[1,2],[2,-1],[3,1]],step:0.1,run:'tellraw @a {"storage":"bs:lambda","nbt":"spline.point"}'}
@@ -351,7 +351,7 @@ function #bs.spline:stream_bezier
 
 ```{function} #bs.spline:stream_bspline
 
-Stream a B-Spline composed of one or more segments. Each segment is defined by four consecutive control points, with three points of a segment reused in the next to ensure smooth blending. This function processes each step over multiple ticks.
+Stream a [B-Spline](#about-splines) composed of one or more segments. Each segment is defined by four consecutive control points, with three points of a segment reused in the next to ensure smooth blending. This function processes each step over multiple ticks.
 
 :Inputs:
   **Storage `bs:in spline.stream_bspline`**:
@@ -364,7 +364,7 @@ Stream a B-Spline composed of one or more segments. Each segment is defined by f
   :::
 ```
 
-*Example: Stream 10 points along a B-Spline curve in 2D space and execute a command at each step ([visualize the curve](#about-splines)):*
+*Example: stream 10 points along a B-Spline curve in 2D space and execute a command at each step*
 
 ```mcfunction
 data modify storage bs:in spline.stream_bspline set value {points:[[0,0],[1,2],[2,-1],[3,1]],step:0.1,run:'tellraw @a {"storage":"bs:lambda","nbt":"spline.point"}'}
@@ -376,7 +376,7 @@ function #bs.spline:stream_bspline
 
 ```{function} #bs.spline:stream_catmull_rom
 
-Stream a Catmull-Rom spline composed of one or more segments. Each segment is defined by four consecutive control points, with three points of a segment reused in the next to ensure smooth blending. This function processes each step over multiple ticks.
+Stream a [Catmull-Rom spline](#about-splines) composed of one or more segments. Each segment is defined by four consecutive control points, with three points of a segment reused in the next to ensure smooth blending. This function processes each step over multiple ticks.
 
 :Inputs:
   **Storage `bs:in spline.stream_catmull_rom`**:
@@ -389,7 +389,7 @@ Stream a Catmull-Rom spline composed of one or more segments. Each segment is de
   :::
 ```
 
-*Example: Stream 10 points along a Catmull-Rom curve in 2D space and execute a command at each step ([visualize the curve](#about-splines)):*
+*Example: stream 10 points along a Catmull-Rom curve in 2D space and execute a command at each step*
 
 ```mcfunction
 data modify storage bs:in spline.stream_catmull_rom set value {points:[[0,0],[1,2],[2,-1],[3,1]],step:0.1,run:'tellraw @a {"storage":"bs:lambda","nbt":"spline.point"}'}
@@ -401,7 +401,7 @@ function #bs.spline:stream_catmull_rom
 
 ```{function} #bs.spline:stream_hermite
 
-Stream a Hermite spline composed of one or more segments. Each segment is defined by two positions and their associated tangents, with two points (the second position and its tangent) reused as the first of the next segment. All coordinates and tangents are absolute. This function processes each step over multiple ticks.
+Stream a [Hermite spline](#about-splines) composed of one or more segments. Each segment is defined by two positions and their associated tangents, with two points (the second position and its tangent) reused as the first of the next segment. All coordinates and tangents are absolute. This function processes each step over multiple ticks.
 
 :Inputs:
   **Storage `bs:in spline.stream_hermite`**:
@@ -414,7 +414,7 @@ Stream a Hermite spline composed of one or more segments. Each segment is define
   :::
 ```
 
-*Example: Stream 10 points along a Hermite curve in 2D space and execute a command at each step ([visualize the curve](#about-splines)):*
+*Example: stream 10 points along a Hermite curve in 2D space and execute a command at each step*
 
 ```mcfunction
 data modify storage bs:in spline.stream_hermite set value {points:[[0,0],[1,2],[2,-1],[3,1]],step:0.1,run:'tellraw @a {"storage":"bs:lambda","nbt":"spline.point"}'}
@@ -439,7 +439,7 @@ Stream a linear spline composed of one or more segments. Each segment connects t
   :::
 ```
 
-*Example: Stream 10 points along a linear path in 2D space and execute a command at each step:*
+*Example: stream 10 points along a linear path in 2D space and execute a command at each step*
 
 ```mcfunction
 data modify storage bs:in spline.stream_linear set value {points:[[0,0],[1,2],[3,0]],step:0.1,run:'tellraw @a {"storage":"bs:lambda","nbt":"spline.point"}'}
@@ -453,8 +453,7 @@ function #bs.spline:stream_linear
 
 ---
 
-(about-splines)=
-## 🎓 About Splines
+## 🎓 About splines
 
 Discover how these curves behave through these visual examples. For more in-depth insights into splines, watch [this video](https://www.youtube.com/watch?v=jvPPXbo87ds).
 

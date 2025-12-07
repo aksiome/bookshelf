@@ -1,5 +1,5 @@
 :orphan:
-# Mentions Légales
+# Mentions légales
 
 Conformément aux dispositions de la loi n° 2004-575 du 21 juin 2004 pour la confiance en l'économie numérique, il est précisé aux utilisateurs du site [docs.mcbookshelf.dev](https://docs.mcbookshelf.dev) l'identité des différents intervenants dans le cadre de sa réalisation et de son suivi.
 
@@ -23,7 +23,7 @@ La direction de publication du Site est assurée par le·a président·e de l'as
 
 Par téléphone : +33699274663 \
 Par email : [contact@altearn.xyz](mailto:contact@altearn.xyz) \
-Par courrier : Appartement 561, 16 rue Curial, 75019 Paris
+Par courrier : appartement 561, 16 rue Curial, 75019 Paris
 
 ## Données personnelles
 

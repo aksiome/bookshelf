@@ -19,10 +19,9 @@ sd_hide_title: true
 
 </div>
 
-## 🕵️ What is Bookshelf?
+## 🕵️ What's Bookshelf?
 
-Bookshelf (formerly known as Gunivers Libs) is a modular library datapack designed to simplify complex systems in Minecraft maps. It is ideal for mapmakers seeking easy-to-implement tools.
-
+Bookshelf is a library datapack for Minecraft. It's modular, so mapmakers can pick only the parts they need. This helps them create complex systems more easily.
 
 ::::{grid} 2
 
@@ -52,7 +51,7 @@ Bookshelf (formerly known as Gunivers Libs) is a modular library datapack design
 
 ---
 
-### 🌟 Featured Modules
+### 🌟 Featured modules
 
 ```{include} _templates/featured-modules.md
 ```
@@ -61,11 +60,9 @@ Bookshelf (formerly known as Gunivers Libs) is a modular library datapack design
 
 ## 🔥 Motivation
 
-As developers, we understand the value of libraries: they save time, streamline workflows, and eliminate the need to reinvent the wheel. However, we have noticed that many mapmakers in the Minecraft community are less familiar with this concept.
+Libraries save time and make systems easier to create. But many Minecraft mapmakers aren't used to them. Bookshelf exists to change that.
 
-That is why we started this project: to provide a variety of reusable tools and encourage mapmakers to embrace the use of libraries.
-
-While we strive to keep our modules as optimized as possible, our top priority is accessibility. We focus on creating features that are easy to use and simple to install, ensuring they are practical for everyone.
+Bookshelf focuses on ease of use. Each module is simple, works for any skill level, and keeps performance in mind.
 
 ```{pull-quote}
 "I have seen further than others because I have stood on the shoulders of giants."
@@ -75,9 +72,10 @@ While we strive to keep our modules as optimized as possible, our top priority i
 
 ## 🤝 Contribution
 
-If you have any questions about the project or want to discuss something, join [our Discord](https://discord.gg/MkXytNjmBt) server.
+Have questions or want to talk about the project? Join the [Discord](https://discord.gg/MkXytNjmBt) server.
 
-If you want to contribute, please refer to the [contribution docs](https://docs.mcbookshelf.dev/en/latest/contribute/index.html) for more information.
+Want to help? See the [contribution](https://docs.mcbookshelf.dev/en/latest/contribute/index.html) section.
+
 
 ```{toctree}
 :hidden:
