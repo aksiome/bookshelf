@@ -1,5 +1,5 @@
 # ------------------------------------------------------------------------------------------------------------
-# Copyright (c) 2025 Gunivers
+# Copyright (c) 2026 Gunivers
 #
 # This file is part of the Bookshelf project (https://github.com/mcbookshelf/bookshelf).
 #
@@ -13,8 +13,4 @@
 # For more details, refer to the MPL v2.0.
 # ------------------------------------------------------------------------------------------------------------
 
-execute store result storage bs:ctx x int 1 run scoreboard players get $vector.length.0 bs.in
-execute store result storage bs:ctx y int 1 run scoreboard players get $vector.length.1 bs.in
-execute store result storage bs:ctx z int 1 run scoreboard players get $vector.length.2 bs.in
-
-execute store result score $vector.length bs.out as B5-0-0-0-2 run return run function bs.vector:length/compute with storage bs:ctx
+execute positioned as @s run tp @s ~ ~ ~ ~ ~

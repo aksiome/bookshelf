@@ -1,5 +1,5 @@
 # ------------------------------------------------------------------------------------------------------------
-# Copyright (c) 2025 Gunivers
+# Copyright (c) 2026 Gunivers
 #
 # This file is part of the Bookshelf project (https://github.com/mcbookshelf/bookshelf).
 #
@@ -13,11 +13,9 @@
 # For more details, refer to the MPL v2.0.
 # ------------------------------------------------------------------------------------------------------------
 
-# Compute relative position
-# Thanks to SilicatYT for sharing this trick on the Minecraft Commands discord
-$execute rotated 180 90 run tp @s ^$(x) ^$(z) ^$(y)
-data modify storage bs:ctx _ set from entity @s Pos
-data modify storage bs:ctx x set from storage bs:ctx _[0]
-data modify storage bs:ctx y set from storage bs:ctx _[1]
-data modify storage bs:ctx z set from storage bs:ctx _[2]
-kill @s
+execute store result storage bs:data vector.distance[0] float 1 run scoreboard players get $vector.length.0 bs.in
+execute store result storage bs:data vector.distance[4] float 1 run scoreboard players get $vector.length.1 bs.in
+execute store result storage bs:data vector.distance[8] float 1 run scoreboard players get $vector.length.2 bs.in
+data modify entity B5-0-0-0-2 transformation set from storage bs:data vector.distance
+
+execute store result score $vector.length bs.out run return run data get entity B5-0-0-0-2 transformation.scale[0]

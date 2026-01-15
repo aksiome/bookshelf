@@ -1,5 +1,5 @@
 # ------------------------------------------------------------------------------------------------------------
-# Copyright (c) 2025 Gunivers
+# Copyright (c) 2026 Gunivers
 #
 # This file is part of the Bookshelf project (https://github.com/mcbookshelf/bookshelf).
 #
@@ -18,5 +18,5 @@ execute store result score $environment.celestial_angle.daytime bs.in run time q
 # scaling factor
 data modify storage bs:ctx z set value 1000f
 function bs.environment:celestial/get_sun_angle_internal
-execute if score $environment.celestial_angle.daytime bs.in matches 6000..18000 run function bs.environment:celestial/rotate_90 with storage bs:out environment
-execute unless score $environment.celestial_angle.daytime bs.in matches 6000..18000 run function bs.environment:celestial/rotate_-90 with storage bs:out environment
+execute if score $environment.celestial_angle.daytime bs.in matches 6000..18000 run return run function bs.environment:celestial/rotate_90 with storage bs:out environment
+function bs.environment:celestial/rotate_-90 with storage bs:out environment

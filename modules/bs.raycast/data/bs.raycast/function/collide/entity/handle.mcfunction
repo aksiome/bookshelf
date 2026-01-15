@@ -1,5 +1,5 @@
 # ------------------------------------------------------------------------------------------------------------
-# Copyright (c) 2025 Gunivers
+# Copyright (c) 2026 Gunivers
 #
 # This file is part of the Bookshelf project (https://github.com/mcbookshelf/bookshelf).
 #
@@ -13,7 +13,7 @@
 # For more details, refer to the MPL v2.0.
 # ------------------------------------------------------------------------------------------------------------
 
-$tp @s ^ ^ ^$(distance)
+function bs.raycast:utils/tp_hit_point with storage bs:lambda raycast
 execute if data storage bs:data raycast.data{hit_point:1b} run data modify storage bs:lambda raycast.hit_point set from entity @s Pos
 execute positioned as @s as @n[predicate=bs.raycast:internal/collide,distance=..24,sort=arbitrary] run function bs.raycast:collide/entity/target
 tp @s ~ ~ ~

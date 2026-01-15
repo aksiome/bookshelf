@@ -1,5 +1,5 @@
 # ------------------------------------------------------------------------------------------------------------
-# Copyright (c) 2025 Gunivers
+# Copyright (c) 2026 Gunivers
 #
 # This file is part of the Bookshelf project (https://github.com/mcbookshelf/bookshelf).
 #
@@ -16,4 +16,5 @@
 tp @s ~ ~ ~ ~ ~
 data modify storage bs:data generation._.pos set from entity @s Pos
 data modify storage bs:data generation._.rot set from entity @s Rotation
+tp @s ~ -100000 ~
 kill @s

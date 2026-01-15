@@ -1,5 +1,5 @@
 # ------------------------------------------------------------------------------------------------------------
-# Copyright (c) 2025 Gunivers
+# Copyright (c) 2026 Gunivers
 #
 # This file is part of the Bookshelf project (https://github.com/mcbookshelf/bookshelf).
 #
@@ -27,4 +27,4 @@ data modify storage bs:ctx _ set from storage bs:out block
 execute if score #n bs.ctx matches 0 run return run function bs.block:get/compile/concat/block/state with storage bs:ctx _
 
 # return the block string: {type}{state}{nbt}
-execute as B5-0-0-0-2 run return run function bs.block:get/compile/nbt
+execute as B5-0-0-0-3 run return run function bs.block:get/compile/nbt

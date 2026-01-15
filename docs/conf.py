@@ -66,7 +66,6 @@ html_context = {
     "version_switcher": "https://docs.mcbookshelf.dev/en/master/_static/switcher.json",
     "languages": [
         ("English", f"/en/{version}/%s/", "en"),
-        ("Français", f"/fr/{version}/%s/", "fr"),
         ("中文", f"/zh-cn/{version}/%s/", "zh-cn"),
     ],
 }
@@ -86,7 +85,7 @@ support = """
 html_theme_options = {
     "footer": [
         "footer-copyright.html",
-        "mentions-legales.html",
+        "footer-links.html",
         "external-links.html",
     ],
     "external_links": [

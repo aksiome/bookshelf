@@ -1,5 +1,5 @@
 # ------------------------------------------------------------------------------------------------------------
-# Copyright (c) 2025 Gunivers
+# Copyright (c) 2026 Gunivers
 #
 # This file is part of the Bookshelf project (https://github.com/mcbookshelf/bookshelf).
 #
@@ -13,7 +13,6 @@
 # For more details, refer to the MPL v2.0.
 # ------------------------------------------------------------------------------------------------------------
 
-# Compute Euclidean distance: sqrt(x^2+y^2+z^2)
-# Thanks to Triton365 for sharing this trick on the Minecraft Commands discord
-$data modify entity @s transformation set value [$(x)f,0f,0f,0f,$(y)f,0f,0f,0f,$(z)f,0f,0f,0f,0f,0f,0f,1f]
-return run data get entity @s transformation.scale[0]
+# nautilus group
+execute unless predicate bs.hitbox:internal/is_baby run return run data modify storage bs:out hitbox set value {width:0.875,height:0.95}
+data modify storage bs:out hitbox set value {width:0.4375,height:0.475}

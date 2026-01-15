@@ -1,5 +1,5 @@
 # ------------------------------------------------------------------------------------------------------------
-# Copyright (c) 2025 Gunivers
+# Copyright (c) 2026 Gunivers
 #
 # This file is part of the Bookshelf project (https://github.com/mcbookshelf/bookshelf).
 #
@@ -35,4 +35,5 @@ execute store result storage bs:data block._.max_z int 1 run scoreboard players 
 
 data modify entity @s Pos set from storage bs:data block._.pos
 execute positioned as @s run function bs.block:fill/recurse/next with storage bs:data block._
+tp @s ~ -100000 ~
 kill @s
