@@ -13,20 +13,4 @@
 # For more details, refer to the MPL v2.0.
 # ------------------------------------------------------------------------------------------------------------
 
-# Push the current entity animation onto the stack
-data modify storage bs:data animation append value {}
-data modify storage bs:data animation[-1].nbt.data set from entity @s data
-$data modify storage bs:data animation[-1].defs append from storage bs:data animation[-1].nbt.data."bs.animation"[{id:"$(id)"}]
-execute unless data storage bs:data animation[-1].defs[0] run return run function bs.animation:utils/fail
-$data remove storage bs:data animation[-1].nbt.data."bs.animation"[{id:"$(id)"}]
-
-# Stop the animation and evaluate it at time 0
-data remove storage bs:data animation[-1].defs[].tick
-data remove storage bs:data animation[-1].defs[].loop
-data remove storage bs:data animation[-1].defs[].step
-data remove storage bs:data animation[-1].defs[].interval
-function bs.animation:reset/many with storage bs:data animation[-1].defs[0]
-
-# Apply the evaluated animation to the entity and pop the stack
-data modify entity @s {} merge from storage bs:data animation[-1].nbt
-data remove storage bs:data animation[-1]
+return run function bs.animation:reset/run with storage bs.animation:reset in

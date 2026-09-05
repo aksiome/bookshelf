@@ -21,9 +21,10 @@ __pycache__/
 *~
 *$py.class
 build/
+coverage.html
+coverage.lcov
 dist/
 docs/_build/
-# Sphinx/Babel temporary gettext output
 docs/_locales/**/LC_MESSAGES/gettext/
 locales/
 env.bak/

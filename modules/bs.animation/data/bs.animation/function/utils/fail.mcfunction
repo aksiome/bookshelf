@@ -13,5 +13,5 @@
 # For more details, refer to the MPL v2.0.
 # ------------------------------------------------------------------------------------------------------------
 
-data remove storage bs:data animation[-1]
+data remove storage bs.animation: stack[-1]
 return fail

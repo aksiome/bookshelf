@@ -11,5 +11,8 @@
     "documentation": "https://docs.mcbookshelf.dev/en/latest/modules/animation.html",
     "tags": ["runtime"],
     "dependencies": []
-  }
+  },
+  "pipeline": [
+    "gen_animation"
+  ]
 }

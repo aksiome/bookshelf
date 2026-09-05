@@ -7,7 +7,8 @@ from tempfile import TemporaryDirectory
 from typing import TYPE_CHECKING
 
 import click
-from mcward import WardError
+from mcward import CoverageIgnores, WardError
+from mcward.cli.commands.test import parse_coverage_report, report_session
 from mcward.cli.datapacks import discover_datapacks, pack_resolver
 from mcward.cli.environments import get_environment, manager, start_environments
 from mcward.cli.reporters import github, live
@@ -97,15 +98,43 @@ def release() -> None:
     default="live",
     help="Result output: interactive live display, or GitHub Actions annotations.",
 )
+@click.option(
+    "--coverage",
+    is_flag=True,
+    help="Record which function commands run and report line coverage.",
+)
+@click.option(
+    "--coverage-report",
+    "coverage_reports",
+    multiple=True,
+    metavar="FORMAT[:PATH]",
+    help="Write coverage as 'lcov' or 'html', with an optional path (repeatable); "
+    "implies --coverage.",
+)
+@click.option(
+    "--junit-xml",
+    type=click.Path(dir_okay=False, writable=True, path_type=Path),
+    default=None,
+    help="Write test results as JUnit XML.",
+)
+@click.option(
+    "--verbose",
+    is_flag=True,
+    help="List every test and coverage row instead of collapsing large runs.",
+)
 def test(
     modules: tuple[str, ...],
     *,
     versions: bool,
     reporter: str,
+    coverage: bool,
+    coverage_reports: tuple[str, ...],
+    junit_xml: Path | None,
+    verbose: bool,
 ) -> None:
     """Build and test modules."""
     selector = "*:*"
-    if len(modules) == 1 and ":" in modules[0]:
+    if len(modules) == 1:
         module, _, path = modules[0].partition(":")
         selector = f"{module}:{path or '*'}"
         modules = (module,)
@@ -136,11 +165,17 @@ def test(
 
         selected = resolve_versions(datapacks, all_versions=versions)
         try:
-            envs = start_environments([get_environment(v.name) for v in selected])
+            specs = [parse_coverage_report(value) for value in coverage_reports]
+            enabled = coverage or bool(specs)
             run = github.run if reporter == "github" else live.run
             resolve = pack_resolver([MODULES_DIR / m for m in modules])
+            ignores = CoverageIgnores.load()
+            envs = start_environments([get_environment(v.name) for v in selected])
+            console.print()
             paths = [datapack.path for datapack in datapacks]
-            if run(paths, envs, resolve=resolve, selector=selector).failed:
+            session = run(paths, envs, selector, enabled, verbose, resolve)
+            report_session(session, paths, specs, None, verbose, selector, ignores)
+            if session.failed:
                 sys.exit(1)
         except WardError as e:
             raise click.ClickException(str(e)) from e

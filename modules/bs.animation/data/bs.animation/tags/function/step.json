@@ -6,16 +6,15 @@
       "Aksiome"
     ],
     "created": {
-      "date": "2026/08/12",
-      "minecraft_version": "26.2"
+      "date": "2026/09/05",
+      "minecraft_version": "26.3"
     },
     "updated": {
-      "date": "2026/08/12",
-      "minecraft_version": "26.2"
+      "date": "2026/09/05",
+      "minecraft_version": "26.3"
     }
   },
   "values": [
-    "bs.animation:step/with",
     "bs.animation:step/step"
   ]
 }

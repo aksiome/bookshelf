@@ -13,10 +13,15 @@
 # For more details, refer to the MPL v2.0.
 # ------------------------------------------------------------------------------------------------------------
 
+scoreboard objectives remove bs.anim
 scoreboard objectives remove bs.ctx
-scoreboard objectives remove bs.const
-scoreboard objectives remove bs.lambda
 
-scoreboard objectives remove bs.animation.tick
-
-data remove storage bs:data animation
+data remove storage bs.animation: _
+data remove storage bs.animation: stack
+data remove storage bs.animation:attach in
+data remove storage bs.animation:detach in
+data remove storage bs.animation:pause in
+data remove storage bs.animation:play in
+data remove storage bs.animation:reset in
+data remove storage bs.animation:rewind in
+data remove storage bs.animation:step in
