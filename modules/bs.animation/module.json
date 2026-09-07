@@ -7,10 +7,9 @@
   "meta": {
     "name": "Animation",
     "slug": "bookshelf-animation",
-    "description": "",
+    "description": "Attach animations to entities.",
     "documentation": "https://docs.mcbookshelf.dev/en/latest/modules/animation.html",
-    "tags": ["runtime"],
-    "dependencies": []
+    "tags": ["runtime"]
   },
   "pipeline": [
     "gen_animation"
