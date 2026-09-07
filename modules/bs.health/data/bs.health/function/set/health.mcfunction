@@ -15,16 +15,13 @@
 
 # Note: Thanks to XanBelOr for the idea of using the effects_changed trigger advancement
 
-# Get current health, max_health, and input points
+# Get current health, max_health, and input
+$data modify storage bs:ctx x set compute default float {type:constant,value:$(points)}
 execute store result score #h bs.ctx run data get entity @s Health 1000000
-scoreboard players add #h bs.ctx 5
-scoreboard players operation #h bs.ctx /= 10 bs.const
-execute store result score #m bs.ctx run attribute @s minecraft:max_health get 100000
-$execute store result score @s bs.hmod run data get storage bs:const health.point $(points)
+execute store result score #m bs.ctx run attribute @s minecraft:max_health get 1000000
 
 # Clamp input points to max possible healing, and convert the set operation to an additive one
-scoreboard players operation @s bs.hmod < #m bs.ctx
-scoreboard players operation @s bs.hmod -= #h bs.ctx
+execute store result score @s bs.hmod run compute default integer {type:sub,left:{type:min,inputs:[{type:from_float,input:{type:mul,inputs:[{type:storage,storage:"bs:ctx",path:"x"},1000000]}},{type:score,target:{type:fixed,name:"#m"},score:"bs.ctx"}]},right:{type:score,target:{type:fixed,name:"#h"},score:"bs.ctx"}}
 
 # Apply health change: reduction is instant, increase waits for instant_health to take effect
 execute if score @s bs.hmod matches ..-1 run return run function bs.health:utils/decrease_health

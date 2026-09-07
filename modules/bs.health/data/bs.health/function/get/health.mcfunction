@@ -14,7 +14,5 @@
 # ------------------------------------------------------------------------------------------------------------
 
 execute store result score #h bs.ctx run data get entity @s Health 1000000
-scoreboard players add #h bs.ctx 5
-scoreboard players operation #h bs.ctx /= 10 bs.const
-execute store result storage bs:out health.get_health double 0.00001 run scoreboard players operation #h bs.ctx += @s bs.hmod
+execute store result storage bs:out health.get_health float 0.000001 run scoreboard players operation #h bs.ctx += @s bs.hmod
 $return run data get storage bs:out health.get_health $(scale)

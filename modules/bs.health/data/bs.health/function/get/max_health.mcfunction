@@ -13,5 +13,5 @@
 # For more details, refer to the MPL v2.0.
 # ------------------------------------------------------------------------------------------------------------
 
-execute store result storage bs:out health.get_max_health double 0.00001 run attribute @s minecraft:max_health base get 100000
+execute store result storage bs:out health.get_max_health float 0.000001 run attribute @s minecraft:max_health base get 1000000
 $return run data get storage bs:out health.get_max_health $(scale)
