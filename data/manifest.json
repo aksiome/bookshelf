@@ -4,7 +4,9 @@
       "id": "bs.animation",
       "name": "Animation",
       "slug": "bookshelf-animation",
-      "description": "",
+      "icon": "https://raw.githubusercontent.com/mcbookshelf/bookshelf/refs/tags/v4.2.0/modules/bs.animation/pack.png",
+      "readme": "https://raw.githubusercontent.com/mcbookshelf/bookshelf/refs/tags/v4.2.0/modules/bs.animation/README.md",
+      "description": "Attach animations to entities.",
       "documentation": "https://docs.mcbookshelf.dev/en/latest/modules/animation.html",
       "kind": "data_pack",
       "tags": [
@@ -12,51 +14,35 @@
       ],
       "features": [
         {
-          "id": "#bs.animation:bake",
-          "kind": "function_tag",
-          "documentation": "https://docs.mcbookshelf.dev/en/latest/modules/animation.html#bake",
-          "authors": [
-            "Aksiome"
-          ],
-          "created": {
-            "date": "2026/08/12",
-            "minecraft_version": "26.2"
-          },
-          "updated": {
-            "date": "2026/08/12",
-            "minecraft_version": "26.2"
-          }
-        },
-        {
-          "id": "#bs.animation:create",
+          "id": "#bs.animation:attach",
           "kind": "function_tag",
           "documentation": "https://docs.mcbookshelf.dev/en/latest/modules/animation.html#create",
           "authors": [
             "Aksiome"
           ],
           "created": {
-            "date": "2026/08/12",
-            "minecraft_version": "26.2"
+            "date": "2026/09/05",
+            "minecraft_version": "26.3"
           },
           "updated": {
-            "date": "2026/08/12",
-            "minecraft_version": "26.2"
+            "date": "2026/09/05",
+            "minecraft_version": "26.3"
           }
         },
         {
-          "id": "#bs.animation:delete",
+          "id": "#bs.animation:detach",
           "kind": "function_tag",
           "documentation": "https://docs.mcbookshelf.dev/en/latest/modules/animation.html#delete",
           "authors": [
             "Aksiome"
           ],
           "created": {
-            "date": "2026/08/12",
-            "minecraft_version": "26.2"
+            "date": "2026/09/05",
+            "minecraft_version": "26.3"
           },
           "updated": {
-            "date": "2026/08/12",
-            "minecraft_version": "26.2"
+            "date": "2026/09/05",
+            "minecraft_version": "26.3"
           }
         },
         {
@@ -67,12 +53,12 @@
             "Aksiome"
           ],
           "created": {
-            "date": "2026/08/12",
-            "minecraft_version": "26.2"
+            "date": "2026/09/05",
+            "minecraft_version": "26.3"
           },
           "updated": {
-            "date": "2026/08/12",
-            "minecraft_version": "26.2"
+            "date": "2026/09/05",
+            "minecraft_version": "26.3"
           }
         },
         {
@@ -83,12 +69,12 @@
             "Aksiome"
           ],
           "created": {
-            "date": "2026/08/12",
-            "minecraft_version": "26.2"
+            "date": "2026/09/05",
+            "minecraft_version": "26.3"
           },
           "updated": {
-            "date": "2026/08/12",
-            "minecraft_version": "26.2"
+            "date": "2026/09/05",
+            "minecraft_version": "26.3"
           }
         },
         {
@@ -99,12 +85,12 @@
             "Aksiome"
           ],
           "created": {
-            "date": "2026/08/12",
-            "minecraft_version": "26.2"
+            "date": "2026/09/05",
+            "minecraft_version": "26.3"
           },
           "updated": {
-            "date": "2026/08/12",
-            "minecraft_version": "26.2"
+            "date": "2026/09/05",
+            "minecraft_version": "26.3"
           }
         },
         {
@@ -115,12 +101,12 @@
             "Aksiome"
           ],
           "created": {
-            "date": "2026/08/12",
-            "minecraft_version": "26.2"
+            "date": "2026/09/05",
+            "minecraft_version": "26.3"
           },
           "updated": {
-            "date": "2026/08/12",
-            "minecraft_version": "26.2"
+            "date": "2026/09/05",
+            "minecraft_version": "26.3"
           }
         },
         {
@@ -131,12 +117,12 @@
             "Aksiome"
           ],
           "created": {
-            "date": "2026/08/12",
-            "minecraft_version": "26.2"
+            "date": "2026/09/05",
+            "minecraft_version": "26.3"
           },
           "updated": {
-            "date": "2026/08/12",
-            "minecraft_version": "26.2"
+            "date": "2026/09/05",
+            "minecraft_version": "26.3"
           }
         }
       ]
