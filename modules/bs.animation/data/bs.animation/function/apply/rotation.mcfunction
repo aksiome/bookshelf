@@ -16,3 +16,4 @@
 data modify storage bs.animation: stack[-1].nbt.Rotation set value []
 data modify storage bs.animation: stack[-1].nbt.Rotation append compute default float bs.animation:eval/0
 data modify storage bs.animation: stack[-1].nbt.Rotation append compute default float bs.animation:eval/1
+execute store success storage bs.animation: stack[-1].nbt.OnGround byte 1 if data entity @s {OnGround:0b}
