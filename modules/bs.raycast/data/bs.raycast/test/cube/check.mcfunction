@@ -16,12 +16,16 @@
 fill ~-1 ~ ~-1 ~1 ~1 ~1 minecraft:air
 setblock ~ ~ ~ minecraft:stone
 
-execute positioned ~1.5 ~.5 ~.5 facing ~-.5 ~ ~ store result score #r bs.ctx run function #bs.raycast:run {with:{max_distance:2}}
+data modify storage bs.raycast:cast in set value {blocks:"#bs.hitbox:get_block/collision",max_distance:2}
+execute positioned ~1.5 ~.5 ~.5 facing ~-.5 ~ ~ store result score #r bs.ctx run function #bs.raycast:cast
 execute if score #r bs.ctx matches 0 run fail "Failed to detect a targeted block"
-execute positioned ~-.5 ~.5 ~.5 facing ~.5 ~ ~ store result score #r bs.ctx run function #bs.raycast:run {with:{max_distance:2}}
+data modify storage bs.raycast:cast in set value {blocks:"#bs.hitbox:get_block/collision",max_distance:2}
+execute positioned ~-.5 ~.5 ~.5 facing ~.5 ~ ~ store result score #r bs.ctx run function #bs.raycast:cast
 execute if score #r bs.ctx matches 0 run fail "Failed to detect a targeted block"
 
-execute positioned ~1.5 ~.5 ~.5 facing ~.5 ~ ~ store result score #r bs.ctx run function #bs.raycast:run {with:{max_distance:2}}
+data modify storage bs.raycast:cast in set value {blocks:"#bs.hitbox:get_block/collision",max_distance:2}
+execute positioned ~1.5 ~.5 ~.5 facing ~.5 ~ ~ store result score #r bs.ctx run function #bs.raycast:cast
 execute if score #r bs.ctx matches 1 run fail "Should not detect a targeted block"
-execute positioned ~-.5 ~.5 ~.5 facing ~-.5 ~ ~ store result score #r bs.ctx run function #bs.raycast:run {with:{max_distance:2}}
+data modify storage bs.raycast:cast in set value {blocks:"#bs.hitbox:get_block/collision",max_distance:2}
+execute positioned ~-.5 ~.5 ~.5 facing ~-.5 ~ ~ store result score #r bs.ctx run function #bs.raycast:cast
 execute if score #r bs.ctx matches 1 run fail "Should not detect a targeted block"

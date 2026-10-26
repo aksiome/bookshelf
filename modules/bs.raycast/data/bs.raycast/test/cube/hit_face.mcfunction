@@ -16,8 +16,12 @@
 fill ~-1 ~ ~-1 ~1 ~1 ~1 minecraft:air
 setblock ~ ~ ~ minecraft:stone
 
-execute positioned ~.5 ~1.5 ~.5 rotated 0 90 store result score #r bs.ctx run function #bs.raycast:run {with:{on_targeted_block:"assert score $raycast.hit_face bs.lambda matches 1"}}
+data modify storage bs.raycast:cast in set value {blocks:"#bs.hitbox:get_block/collision",on_block:'assert predicate bs.raycast:face/top'}
+execute positioned ~.5 ~1.5 ~.5 rotated 0 90 store result score #r bs.ctx run function #bs.raycast:cast
 execute if score #r bs.ctx matches 0 run fail "Failed to detect a targeted block"
 
-execute positioned ~.5 ~-.5 ~.5 rotated 0 -90 store result score #r bs.ctx run function #bs.raycast:run {with:{on_targeted_block:"assert score $raycast.hit_face bs.lambda matches 0"}}
+setblock ~ ~ ~ minecraft:air
+setblock ~ ~1 ~ minecraft:stone
+data modify storage bs.raycast:cast in set value {blocks:"#bs.hitbox:get_block/collision",on_block:'assert predicate bs.raycast:face/bottom'}
+execute positioned ~.5 ~.5 ~.5 rotated 0 -90 store result score #r bs.ctx run function #bs.raycast:cast
 execute if score #r bs.ctx matches 0 run fail "Failed to detect a targeted block"

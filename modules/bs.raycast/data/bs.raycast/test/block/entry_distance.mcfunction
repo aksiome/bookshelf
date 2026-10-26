@@ -16,5 +16,6 @@
 fill ~-1 ~ ~-1 ~1 ~1 ~1 minecraft:air
 setblock ~ ~ ~ minecraft:oak_stairs[facing=east]
 
-execute positioned ~1.5 ~ ~.5 facing ~-.5 ~.52 ~ store result score #r bs.ctx run function #bs.raycast:run {with:{on_entry_point:"assert score $raycast.entry_distance bs.lambda matches 720"}}
+data modify storage bs.raycast:cast in set value {blocks:"#bs.hitbox:get_block/collision",on_entry:'assert result 719..721 run compute default integer {type:"from_float",input:{type:"mul",inputs:[1000.0,"bs.raycast:entry/distance"]}}'}
+execute positioned ~1.5 ~ ~.5 facing ~-.5 ~.52 ~ store result score #r bs.ctx run function #bs.raycast:cast
 execute if score #r bs.ctx matches 0 run fail "Failed to detect a targeted block"

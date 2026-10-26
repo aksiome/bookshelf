@@ -16,9 +16,11 @@
 fill ~-1 ~ ~-1 ~1 ~1 ~1 minecraft:air
 
 setblock ~ ~ ~ minecraft:oak_stairs[facing=east]
-execute positioned ~1.5 ~ ~.5 facing ~-.5 ~.52 ~ store result score #r bs.ctx run function #bs.raycast:run {with:{on_targeted_block:"assert score $raycast.hit_face bs.lambda matches 5"}}
+data modify storage bs.raycast:cast in set value {blocks:"#bs.hitbox:get_block/collision",on_block:'assert predicate bs.raycast:face/east'}
+execute positioned ~1.5 ~ ~.5 facing ~-.5 ~.52 ~ store result score #r bs.ctx run function #bs.raycast:cast
 execute if score #r bs.ctx matches 0 run fail "Failed to detect a targeted block"
 
 setblock ~ ~ ~ minecraft:oak_stairs[facing=west]
-execute positioned ~-.5 ~ ~.5 facing ~.5 ~.52 ~ store result score #r bs.ctx run function #bs.raycast:run {with:{on_targeted_block:"assert score $raycast.hit_face bs.lambda matches 4"}}
+data modify storage bs.raycast:cast in set value {blocks:"#bs.hitbox:get_block/collision",on_block:'assert predicate bs.raycast:face/west'}
+execute positioned ~-.5 ~ ~.5 facing ~.5 ~.52 ~ store result score #r bs.ctx run function #bs.raycast:cast
 execute if score #r bs.ctx matches 0 run fail "Failed to detect a targeted block"

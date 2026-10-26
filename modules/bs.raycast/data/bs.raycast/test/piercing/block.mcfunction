@@ -18,16 +18,36 @@ setblock ~-1 ~ ~ minecraft:cauldron
 setblock ~ ~ ~ minecraft:cauldron
 setblock ~1 ~ ~ minecraft:cauldron
 
-execute store result score #ward.on_entry_point bs.data store result score #ward.on_exit_point bs.data run scoreboard players set #ward.on_targeted_block bs.data 0
-execute positioned ~2.5 ~.5 ~.5 facing ~-.5 ~ ~ run function #bs.raycast:run {with:{piercing:{blocks:2},max_distance:4,on_entry_point:"scoreboard players add #ward.on_entry_point bs.data 1",on_exit_point:"scoreboard players add #ward.on_exit_point bs.data 1",on_targeted_block:"scoreboard players add #ward.on_targeted_block bs.data 1"}}
+# the ray goes through the 2 walls of each cauldron: 2 shapes per block, and the command of the block decides
+scoreboard players set #ward.raycast.blocks bs.data 0
+scoreboard players set #ward.raycast.entries bs.data 0
+scoreboard players set #ward.raycast.exits bs.data 0
+data modify storage bs.raycast:cast in set value {blocks:"#bs.hitbox:get_block/collision",max_distance:4,on_entry:'scoreboard players add #ward.raycast.entries bs.data 1',on_exit:'scoreboard players add #ward.raycast.exits bs.data 1',on_block:'return run scoreboard players add #ward.raycast.blocks bs.data 1'}
+execute positioned ~2.5 ~.5 ~.5 facing ~-.5 ~ ~ store result score #r bs.ctx run function #bs.raycast:cast
+assert score #ward.raycast.blocks bs.data matches 3
+assert score #ward.raycast.entries bs.data matches 6
+assert score #ward.raycast.exits bs.data matches 6
 
-assert score #ward.on_entry_point bs.data matches 5
-assert score #ward.on_exit_point bs.data matches 5
-assert score #ward.on_targeted_block bs.data matches 3
+# a command that returns 0 stops the ray: here at the second block
+scoreboard players set #ward.raycast.left bs.data 2
+scoreboard players set #ward.raycast.entries bs.data 0
+scoreboard players set #ward.raycast.exits bs.data 0
+data modify storage bs.raycast:cast in set value {blocks:"#bs.hitbox:get_block/collision",max_distance:4,on_entry:'scoreboard players add #ward.raycast.entries bs.data 1',on_exit:'scoreboard players add #ward.raycast.exits bs.data 1',on_block:'return run scoreboard players remove #ward.raycast.left bs.data 1'}
+execute positioned ~2.5 ~.5 ~.5 facing ~-.5 ~ ~ store result score #r bs.ctx run function #bs.raycast:cast
+execute if score #r bs.ctx matches 0 run fail "Failed to detect a targeted block"
+assert score #ward.raycast.left bs.data matches 0
+assert score #ward.raycast.entries bs.data matches 3
+assert score #ward.raycast.exits bs.data matches 2
 
-execute store result score #ward.on_entry_point bs.data store result score #ward.on_exit_point bs.data run scoreboard players set #ward.on_targeted_block bs.data 0
-execute positioned ~2.5 ~.5 ~.5 facing ~-.5 ~ ~ run function #bs.raycast:run {with:{piercing:{blocks:-1},max_distance:4,on_entry_point:"scoreboard players add #ward.on_entry_point bs.data 1",on_exit_point:"scoreboard players add #ward.on_exit_point bs.data 1",on_targeted_block:"scoreboard players add #ward.on_targeted_block bs.data 1"}}
+# the block command runs before the entries of its shapes
+scoreboard players set #ward.raycast.order bs.data 0
+data modify storage bs.raycast:cast in set value {blocks:"#bs.hitbox:get_block/collision",max_distance:4,on_block:'scoreboard players set #ward.raycast.order bs.data 1',on_entry:'assert score #ward.raycast.order bs.data matches 1'}
+execute positioned ~2.5 ~.5 ~.5 facing ~-.5 ~ ~ store result score #r bs.ctx run function #bs.raycast:cast
+execute if score #r bs.ctx matches 0 run fail "Failed to detect a targeted block"
 
-assert score #ward.on_entry_point bs.data matches 6
-assert score #ward.on_exit_point bs.data matches 6
-assert score #ward.on_targeted_block bs.data matches 3
+# an exit command can stop the ray too: here after leaving the first block
+scoreboard players set #ward.raycast.blocks bs.data 0
+data modify storage bs.raycast:cast in set value {blocks:"#bs.hitbox:get_block/collision",max_distance:4,on_block:'return run scoreboard players add #ward.raycast.blocks bs.data 1',on_exit:'return 0'}
+execute positioned ~2.5 ~.5 ~.5 facing ~-.5 ~ ~ store result score #r bs.ctx run function #bs.raycast:cast
+execute if score #r bs.ctx matches 0 run fail "Failed to detect a targeted block"
+assert score #ward.raycast.blocks bs.data matches 1

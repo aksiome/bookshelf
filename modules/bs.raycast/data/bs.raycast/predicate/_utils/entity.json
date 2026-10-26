@@ -1,0 +1,14 @@
+{
+  "type": "entity_scores",
+  "entity": "this",
+  "scores": {
+    "bs.raycast.hit": {
+      "type": "score",
+      "target": {
+        "type": "fixed",
+        "name": "#raycast.entity"
+      },
+      "score": "bs.data"
+    }
+  }
+}

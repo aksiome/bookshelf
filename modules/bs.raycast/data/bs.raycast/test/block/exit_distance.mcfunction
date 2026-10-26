@@ -16,5 +16,12 @@
 fill ~-1 ~ ~-1 ~1 ~1 ~1 minecraft:air
 setblock ~ ~ ~ minecraft:oak_stairs[facing=east]
 
-execute positioned ~1.5 ~ ~.5 facing ~-.5 ~.52 ~ store result score #r bs.ctx run function #bs.raycast:run {with:{on_exit_point:"assert score $raycast.exit_distance bs.lambda matches 1387"}}
-execute if score #r bs.ctx matches 0 run fail "Failed to detect a targeted block"
+# the ray leaves the shape when a command lets it through
+data modify storage bs.raycast:cast in set value {blocks:"#bs.hitbox:get_block/collision",max_distance:1.5,on_block:'return 1',on_exit:'assert result 1386..1388 run compute default integer {type:"from_float",input:{type:"mul",inputs:[1000.0,"bs.raycast:exit/distance"]}}'}
+execute positioned ~1.5 ~ ~.5 facing ~-.5 ~.52 ~ store result score #r bs.ctx run function #bs.raycast:cast
+execute if score #r bs.ctx matches 1 run fail "Should not detect a targeted block"
+
+# the exit stays right when the block command asks for the boxes of another block, here the ground under it
+data modify storage bs.raycast:cast in set value {blocks:"#bs.hitbox:get_block/collision",max_distance:1.5,on_block:'return run execute positioned ~ ~-1 ~ run function #bs.hitbox:get_block/collision',on_exit:'assert result 1386..1388 run compute default integer {type:"from_float",input:{type:"mul",inputs:[1000.0,"bs.raycast:exit/distance"]}}'}
+execute positioned ~1.5 ~ ~.5 facing ~-.5 ~.52 ~ store result score #r bs.ctx run function #bs.raycast:cast
+execute if score #r bs.ctx matches 1 run fail "Should not detect a targeted block"

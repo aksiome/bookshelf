@@ -16,5 +16,7 @@
 fill ~-1 ~ ~-1 ~1 ~1 ~1 minecraft:air
 setblock ~ ~ ~ minecraft:stone
 
-execute positioned ~1.5 ~.5 ~.5 facing ~-.5 ~ ~ store result score #r bs.ctx run function #bs.raycast:run {with:{on_exit_point:"assert score $raycast.exit_distance bs.lambda matches 1500"}}
-execute if score #r bs.ctx matches 0 run fail "Failed to detect a targeted block"
+# the ray leaves the block when a command lets it through
+data modify storage bs.raycast:cast in set value {blocks:"#bs.hitbox:get_block/collision",max_distance:1.8,on_block:'return 1',on_exit:'assert result 1499..1501 run compute default integer {type:"from_float",input:{type:"mul",inputs:[1000.0,"bs.raycast:exit/distance"]}}'}
+execute positioned ~1.5 ~.5 ~.5 facing ~-.5 ~ ~ store result score #r bs.ctx run function #bs.raycast:cast
+execute if score #r bs.ctx matches 1 run fail "Should not detect a targeted block"
